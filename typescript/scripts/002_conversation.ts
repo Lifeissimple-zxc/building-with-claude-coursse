@@ -8,13 +8,9 @@ const charParams: ChatParams = {
   maxTokens: 1000
 }
 
-const msgOne = "What is looksmaxxxing? Answer in 1 sentence please"
-const respOne = await client.chat(msgOne, charParams)
-client.addUserMessage(msgOne)
-client.addAssistantMessage(respOne)
+const respOne = await client.chat("What is looksmaxxxing? Answer in 1 sentence please", charParams)
 console.log(respOne)
 
-const msgTwo = "Generate a follow up sentence"
-const respTwo = await client.chat(msgTwo, charParams)
+const respTwo = await client.chat("Generate a follow up sentence", charParams)
 console.log(respTwo)
 

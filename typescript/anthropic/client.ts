@@ -31,16 +31,18 @@ export class ClientWithMessageHistory {
   }
 
   async chat(message: string, params: ChatParams): Promise<string> {
+    this.addUserMessage(message)
     const resp = await this.client.messages.create({
       model: params.model,
       max_tokens: params.maxTokens,
-      messages: [...this.messageHistory, {role: Role.User, content: message}]
+      messages: this.messageHistory
     })
 
     const content = resp.content[0]
     if (content.type !== 'text') {
       throw `expected text message type, got: ${content.type}`
     }
+    this.addAssistantMessage(content.text)
     return content.text
   }
 }
