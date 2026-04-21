@@ -17,7 +17,7 @@ rl.on("close", () => {
 })                          
 
 while (true) {
-  const answer = await rl.question("Enter something: ")
+  const answer = await rl.question("> ")
   const cleanedAnswer = answer.trim()
   
   const resp = await client.chat(cleanedAnswer, charParams)
