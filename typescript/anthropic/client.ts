@@ -1,5 +1,5 @@
 import { Anthropic } from "@anthropic-ai/sdk"
-import type { MessageParam } from "@anthropic-ai/sdk/resources"
+import type { MessageParam, MessageCreateParamsNonStreaming } from "@anthropic-ai/sdk/resources"
 
 enum Role {
   User = "user",
@@ -9,12 +9,11 @@ enum Role {
 export interface ChatParams {
   model: string
   maxTokens: number
+  systemPrompt?: string
 }
 
 export class ClientWithMessageHistory {
   client: Anthropic
-  model: string
-  maxTokens: number
   messageHistory: MessageParam[]
 
   constructor(client: Anthropic) {
@@ -32,11 +31,16 @@ export class ClientWithMessageHistory {
 
   async chat(message: string, params: ChatParams): Promise<string> {
     this.addUserMessage(message)
-    const resp = await this.client.messages.create({
+    const body: MessageCreateParamsNonStreaming = {
       model: params.model,
       max_tokens: params.maxTokens,
       messages: this.messageHistory
-    })
+    }
+    if (params.systemPrompt?.length !== 0) {
+      body.system = params.systemPrompt
+    }
+
+    const resp = await this.client.messages.create(body)
 
     const content = resp.content[0]
     if (content.type !== 'text') {
