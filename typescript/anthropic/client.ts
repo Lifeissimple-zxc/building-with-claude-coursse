@@ -9,12 +9,14 @@ enum Role {
 export interface ChatParams {
   model: string
   maxTokens: number
+  temperature?: number
   systemPrompt?: string
 }
 
 export class ClientWithMessageHistory {
   client: Anthropic
   messageHistory: MessageParam[]
+  systemPrompt?: string
 
   constructor(client: Anthropic) {
     this.client = client
@@ -36,8 +38,8 @@ export class ClientWithMessageHistory {
       max_tokens: params.maxTokens,
       messages: this.messageHistory
     }
-    if (params.systemPrompt?.length !== 0) {
-      body.system = params.systemPrompt
+    if (this.systemPrompt?.length !== 0) {
+      body.system = this.systemPrompt
     }
 
     const resp = await this.client.messages.create(body)
