@@ -1,17 +1,10 @@
 import { Anthropic } from "@anthropic-ai/sdk"
-import { ClientWithMessageHistory } from "../anthropic/client.js"
-import type { ChatParams } from "../anthropic/client.js"                                                           
+import { ClientWithMessageHistory } from "../anthropic/client.js"                                                    
 
 const client = new ClientWithMessageHistory(new Anthropic())
 
 const model = "claude-sonnet-4-6"
 const maxTokens = 500
-
-const charParams: ChatParams = {
-  model: "claude-sonnet-4-6",
-  maxTokens: 1000,
-  temperature: 100
-}
 
 const msg = "Generate a one sentence movie idea"  
 const respHighTemp = await client.chat(msg, {

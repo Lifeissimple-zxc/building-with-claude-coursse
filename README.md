@@ -8,3 +8,4 @@ System prompts customize the model's tone and style of response. This is where p
 ### Temperature
 Low -> more deterministic output. Facts, coding, data extraction.
 High -> more variadic output. All the creative business.
+Deprecated in Opus 4.6.

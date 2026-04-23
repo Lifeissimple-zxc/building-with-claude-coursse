@@ -1,5 +1,5 @@
 import { Anthropic } from "@anthropic-ai/sdk"
-import type { MessageParam, MessageCreateParamsNonStreaming } from "@anthropic-ai/sdk/resources"
+import type { MessageParam, MessageCreateParamsNonStreaming, MessageStreamParams } from "@anthropic-ai/sdk/resources"
 
 enum Role {
   User = "user",
@@ -45,6 +45,33 @@ export class ClientWithMessageHistory {
     const resp = await this.client.messages.create(body)
 
     const content = resp.content[0]
+    if (content.type !== 'text') {
+      throw `expected text message type, got: ${content.type}`
+    }
+    this.addAssistantMessage(content.text)
+    return content.text
+  }
+
+  async stream(message: string, params: ChatParams): Promise<string> {
+    this.addUserMessage(message)
+    
+    const body: MessageStreamParams = {
+      model: params.model,
+      max_tokens: params.maxTokens,
+      messages: this.messageHistory,
+    }
+    if (this.systemPrompt?.length !== 0) {
+      body.system = this.systemPrompt
+    }
+    if (params.temperature !== undefined) {
+      body.temperature = params.temperature
+    }
+
+    const stream = await this.client.messages.stream(body)
+    stream.on("text", (delta) => process.stdout.write(delta))  
+
+    const finalMessage = await stream.finalMessage()
+    const content = finalMessage.content[0]
     if (content.type !== 'text') {
       throw `expected text message type, got: ${content.type}`
     }
