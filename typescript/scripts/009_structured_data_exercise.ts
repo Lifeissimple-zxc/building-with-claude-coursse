@@ -14,7 +14,7 @@ const responseMessage = await client.chat(
   [
     {
       role: "user",
-      content: prompt,
+      content: prompt + "\n\n" + formatPrompt,
     },
   ],
   {"systemPrompt": "Return only commands, each on a separate line. No formatting or comments."}
