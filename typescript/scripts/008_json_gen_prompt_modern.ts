@@ -1,6 +1,5 @@
 import { Anthropic } from "@anthropic-ai/sdk"
-import { ClientWithMessageHistory } from "../anthropic/client.js"
-import type { ChatParams } from "../anthropic/client.js"                                                           
+import { ClientWithMessageHistory } from "../anthropic/client.js"                                                  
 
 const client = new ClientWithMessageHistory(
   new Anthropic(),
