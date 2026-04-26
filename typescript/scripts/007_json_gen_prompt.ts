@@ -4,16 +4,17 @@ import type { ChatParams } from "../anthropic/client.js"
 
 const client = new ClientWithMessageHistory(
   new Anthropic(),
-  "claude-sonnet-4-6",
+  "claude-haiku-4-5-20251001",
   1000,
 )
 
-const chatP: ChatParams = {
-  model: "claude-sonnet-4-6",
-  maxTokens: 1000
-}
-
 const msg = "Generate a very short event bridge rule as JSON"
-const responseMessage = await client.chat(msg, chatP)
+const responseMessage = await client.chat(
+  [
+    { role: "user", content: msg },
+    { role: "assistant", content: "```json" },
+  ],
+  { stopSequences: ["```"] },
+)
 
 console.log(responseMessage)

@@ -22,7 +22,10 @@ while (true) {
   const answer = await rl.question("> ")
   const cleanedAnswer = answer.trim()
   
-  const resp = await client.chat(cleanedAnswer, charParams)
+  const resp = await client.chat(
+    [{ role: "user", content: cleanedAnswer }],
+    charParams,
+  )
   console.log(resp)
 }
 

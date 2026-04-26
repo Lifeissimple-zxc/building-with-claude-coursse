@@ -14,6 +14,7 @@ export interface ChatParams {
   maxTokens?: number
   temperature?: number
   systemPrompt?: string
+  stopSequences?: string[]
 }
 
 export class ClientWithMessageHistory {
@@ -47,19 +48,20 @@ export class ClientWithMessageHistory {
 
     const systemPrompt = params?.systemPrompt ?? this.systemPrompt
     if (systemPrompt) body.system = systemPrompt
-
     if (params?.temperature !== undefined) body.temperature = params.temperature
+    const stopSq = params?.stopSequences
+    // a len of zero is falsy, that's why it works.
+    if (params?.stopSequences?.length) {
+      body.stop_sequences = params.stopSequences
+    }
 
     return body
   }
 
-  async chat(message: string, params?: ChatParams): Promise<string> {
-    this.addUserMessage(message)
+  async chat(messages: MessageParam[], params?: ChatParams): Promise<string> {
+    this.messageHistory.push(...messages)
 
-    const body = this.buildBody(params)
-
-    const resp = await this.client.messages.create(body)
-
+    const resp = await this.client.messages.create(this.buildBody(params))
     const content = resp.content[0]
     if (content.type !== 'text') {
       throw `expected text message type, got: ${content.type}`
@@ -68,13 +70,11 @@ export class ClientWithMessageHistory {
     return content.text
   }
 
-  async stream(message: string, params?: ChatParams): Promise<string> {
-    this.addUserMessage(message)
+  async stream(messages: MessageParam[], params?: ChatParams): Promise<string> {
+    this.messageHistory.push(...messages)
 
-    const body = this.buildBody(params)
-
-    const stream = await this.client.messages.stream(body)
-    stream.on("text", (delta) => process.stdout.write(delta))  
+    const stream = this.client.messages.stream(this.buildBody(params))
+    stream.on("text", (delta) => process.stdout.write(delta))
 
     const finalMessage = await stream.finalMessage()
     const content = finalMessage.content[0]

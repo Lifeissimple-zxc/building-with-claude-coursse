@@ -16,7 +16,7 @@ const charParams: ChatParams = {
 
   
   
-const msg = "Write a Python function that checks a string for duplicate char"  
-const resp = await client.chat(msg, charParams)
+const msg = "Write a Python function that checks a string for duplicate char"
+const resp = await client.chat([{ role: "user", content: msg }], charParams)
 console.log(resp)
 

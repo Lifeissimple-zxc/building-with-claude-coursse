@@ -8,9 +8,9 @@ const client = new ClientWithMessageHistory(
   1000,
 )
 
-const msg = "Generate 5-10 movie recommendations for someone who likes Ari Aster."  
+const msg = "Generate 5-10 movie recommendations for someone who likes Ari Aster."
 console.log("Streaming starts now!")
-const respHighTemp = await client.stream(msg)
+const respHighTemp = await client.stream([{ role: "user", content: msg }])
 
 console.log()
 
