@@ -30,4 +30,4 @@ Becomes
 }
 ```
 
-We can control it by prepending an assitant message and adding stop sequences. Assistant 
+We can control it by prepending an assitant message and adding stop sequences. A modern alternative is to add the format requirement to both the user message and the system prompt.
