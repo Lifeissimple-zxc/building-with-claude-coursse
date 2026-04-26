@@ -1,5 +1,8 @@
 import { Anthropic } from "@anthropic-ai/sdk"
-import type { MessageParam, MessageCreateParamsNonStreaming, MessageStreamParams } from "@anthropic-ai/sdk/resources"
+import type {
+  MessageParam,
+  MessageCreateParamsNonStreaming,
+} from "@anthropic-ai/sdk/resources"
 
 enum Role {
   User = "user",
@@ -7,8 +10,8 @@ enum Role {
 }
 
 export interface ChatParams {
-  model: string
-  maxTokens: number
+  model?: string
+  maxTokens?: number
   temperature?: number
   systemPrompt?: string
 }
@@ -16,11 +19,15 @@ export interface ChatParams {
 export class ClientWithMessageHistory {
   client: Anthropic
   messageHistory: MessageParam[]
+  maxTokens: number
+  model: string
   systemPrompt?: string
 
-  constructor(client: Anthropic) {
+  constructor(client: Anthropic, model: string, maxTokens: number) {
     this.client = client
     this.messageHistory = []
+    this.model = model
+    this.maxTokens = maxTokens
   }
 
   addUserMessage(content: string) {
@@ -31,16 +38,25 @@ export class ClientWithMessageHistory {
     this.messageHistory.push({ role: Role.Assistant, content: content})
   }
 
-  async chat(message: string, params: ChatParams): Promise<string> {
-    this.addUserMessage(message)
+  buildBody(params?: ChatParams): MessageCreateParamsNonStreaming {
     const body: MessageCreateParamsNonStreaming = {
-      model: params.model,
-      max_tokens: params.maxTokens,
-      messages: this.messageHistory
+      model: params?.model ?? this.model,
+      max_tokens: params?.maxTokens ?? this.maxTokens,
+      messages: this.messageHistory,
     }
-    if (this.systemPrompt?.length !== 0) {
-      body.system = this.systemPrompt
-    }
+
+    const systemPrompt = params?.systemPrompt ?? this.systemPrompt
+    if (systemPrompt) body.system = systemPrompt
+
+    if (params?.temperature !== undefined) body.temperature = params.temperature
+
+    return body
+  }
+
+  async chat(message: string, params?: ChatParams): Promise<string> {
+    this.addUserMessage(message)
+
+    const body = this.buildBody(params)
 
     const resp = await this.client.messages.create(body)
 
@@ -52,20 +68,10 @@ export class ClientWithMessageHistory {
     return content.text
   }
 
-  async stream(message: string, params: ChatParams): Promise<string> {
+  async stream(message: string, params?: ChatParams): Promise<string> {
     this.addUserMessage(message)
-    
-    const body: MessageStreamParams = {
-      model: params.model,
-      max_tokens: params.maxTokens,
-      messages: this.messageHistory,
-    }
-    if (this.systemPrompt?.length !== 0) {
-      body.system = this.systemPrompt
-    }
-    if (params.temperature !== undefined) {
-      body.temperature = params.temperature
-    }
+
+    const body = this.buildBody(params)
 
     const stream = await this.client.messages.stream(body)
     stream.on("text", (delta) => process.stdout.write(delta))  

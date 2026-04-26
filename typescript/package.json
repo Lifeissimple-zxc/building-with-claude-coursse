@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "chat": "tsx --env-file=../.env scripts/003_chat.ts"
+    "chat": "tsx --env-file=../.env scripts/003_chat.ts",
+    "jsongen": "tsx --env-file=../.env scripts/007_json_gen_prompt.ts"
   },
   "keywords": [],
   "author": "",

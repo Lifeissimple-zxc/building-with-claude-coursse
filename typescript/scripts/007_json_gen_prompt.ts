@@ -8,12 +8,12 @@ const client = new ClientWithMessageHistory(
   1000,
 )
 
-const msg = "Generate 5-10 movie recommendations for someone who likes Ari Aster."  
-console.log("Streaming starts now!")
-const respHighTemp = await client.stream(msg)
+const chatP: ChatParams = {
+  model: "claude-sonnet-4-6",
+  maxTokens: 1000
+}
 
-console.log()
+const msg = "Generate a very short event bridge rule as JSON"
+const responseMessage = await client.chat(msg, chatP)
 
-console.log("Final response:")
-console.log(respHighTemp)
-
+console.log(responseMessage)
