@@ -1,8 +1,8 @@
 import { Anthropic } from "@anthropic-ai/sdk"
-import { ClientWithMessageHistory } from "../anthropic/client.js"
+import { Client } from "../anthropic/client.js"
 import type { ChatParams } from "../anthropic/client.js"                                                           
 
-const client = new ClientWithMessageHistory(
+const client = new Client(
   new Anthropic(),
   "claude-sonnet-4-6",
   1000,

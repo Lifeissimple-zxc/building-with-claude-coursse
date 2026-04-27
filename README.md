@@ -31,3 +31,9 @@ Becomes
 ```
 
 We can control it by prepending an assitant message and adding stop sequences. A modern alternative is to add the format requirement to both the user message and the system prompt.
+
+### Evals
+A prompt eval is a function that assigns a score to an output given its input. It can be:
+- code
+- model
+- human

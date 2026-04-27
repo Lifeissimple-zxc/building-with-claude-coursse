@@ -17,7 +17,7 @@ export interface ChatParams {
   stopSequences?: string[]
 }
 
-export class ClientWithMessageHistory {
+export class Client {
   client: Anthropic
   messageHistory: MessageParam[]
   maxTokens: number

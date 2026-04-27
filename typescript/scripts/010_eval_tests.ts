@@ -1,8 +1,8 @@
 import { Anthropic } from "@anthropic-ai/sdk"
-import { ClientWithMessageHistory } from "../anthropic/client.js"
+import { Client } from "../anthropic/client.js"
 import { writeFile } from "node:fs/promises"
 
-const client = new ClientWithMessageHistory(
+const client = new Client(
   new Anthropic(),
   "claude-sonnet-4-5",
   1000,

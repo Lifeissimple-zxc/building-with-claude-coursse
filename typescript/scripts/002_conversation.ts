@@ -1,7 +1,7 @@
 import { Anthropic } from "@anthropic-ai/sdk"
-import { ClientWithMessageHistory } from "../anthropic/client.js"
+import { Client } from "../anthropic/client.js"
 
-const client = new ClientWithMessageHistory(new Anthropic(), "claude-sonnet-4-6", 1000)
+const client = new Client(new Anthropic(), "claude-sonnet-4-6", 1000)
 
 const respOne = await client.chat([
   { role: "user", content: "What is looksmaxxxing? Answer in 1 sentence please" },
