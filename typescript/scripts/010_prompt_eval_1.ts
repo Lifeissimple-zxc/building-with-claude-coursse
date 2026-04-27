@@ -2,9 +2,11 @@ import { readFile } from "node:fs/promises"
 import { Client } from "../anthropic/client.js"
 import { Anthropic } from "@anthropic-ai/sdk"
 import { getJudgeSystemPrompt, ModelGradeResult } from "../anthropic/prompts/prompts.js"
+import { validateOutput, type Format } from "../anthropic/validation/validation.js"
 
 interface Task {
   task: string
+  format: Format
 }
 
 interface EvalResult {
@@ -21,7 +23,13 @@ const client = new Client(
 )
 
 const getPrompt = (task: string) => {
-  return `Please provide a solution to the following task:\n${task}`
+  return `
+  Please provide a solution to the following task:\n${task}
+  
+  * respond only with Python, JSON or a plain Regex.
+  * do not include comments, backticks, markup or anything else.
+  * the output needs to be a valid expression parsable by python's ast, JSON serialiser or a regex engine.
+  `
 }
 
 async function gradeWithModel(testCase: string, output: string): Promise<ModelGradeResult> {
@@ -56,7 +64,7 @@ async function gradeWithModel(testCase: string, output: string): Promise<ModelGr
   return gradeResult
 }
 
-async function runTestCase(testCase: string): Promise<EvalResult> {
+async function runTestCase(testCase: string, format: Format): Promise<EvalResult> {
   console.log(`evaling testcase ${testCase}`)
   const output = await client.chat(
     [
@@ -64,12 +72,17 @@ async function runTestCase(testCase: string): Promise<EvalResult> {
         content: getPrompt(testCase),
         role: "user"
       }
-    ]
+    ],
+    {systemPrompt: `
+      respond only with python, json or a regex expression. The response should always be a valid form of one of the three.
+      Do not include comments, explanation, backticks or reasoning.
+    `}
   )
   
   // TODO grading
   const modelGradeResult = await gradeWithModel(testCase, output)
-  const score = modelGradeResult.score
+  const syntaxScore = validateOutput(output, format)
+  const score = (modelGradeResult.score + syntaxScore) / 2
   
   return {
     output: output,
@@ -80,7 +93,7 @@ async function runTestCase(testCase: string): Promise<EvalResult> {
 }
 
 async function runEvals(tasks: Task[]): Promise<EvalResult[]> {
-  return Promise.all(tasks.map(t => runTestCase(t.task)))
+  return Promise.all(tasks.map(t => runTestCase(t.task, t.format)))
 }
 
 const text = await readFile("data/tasks.json", "utf-8")

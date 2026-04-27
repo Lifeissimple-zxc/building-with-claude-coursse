@@ -15,7 +15,7 @@ each representing task that requires Python, JSON or a Regex to complete.
 
 Example output:
 [
-  {"task": "Description of task"},
+  {"task": "Description of task", "format": "python" or "json" or "regex"},
   ...additional
 ]
 
