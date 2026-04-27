@@ -1,4 +1,3 @@
-import { MessageParam } from "@anthropic-ai/sdk/resources"
 import { readFile } from "node:fs/promises"
 import { Client } from "../anthropic/client.js"
 import { Anthropic } from "@anthropic-ai/sdk"
@@ -12,6 +11,7 @@ interface EvalResult {
   output: string
   testCase: string
   score: number
+  reasoning: string
 }
 
 const client = new Client(
@@ -24,7 +24,7 @@ const getPrompt = (task: string) => {
   return `Please provide a solution to the following task:\n${task}`
 }
 
-async function gradeWithModel(testCase: string, output: string): Promise<number> {
+async function gradeWithModel(testCase: string, output: string): Promise<ModelGradeResult> {
   const gradingPrompt = getJudgeSystemPrompt(testCase, output)
   const resp = await client.chat(
     [
@@ -49,16 +49,14 @@ async function gradeWithModel(testCase: string, output: string): Promise<number>
     }
   )
 
-  console.log(`response for ${testCase}: ${resp}`)
   const gradeResult: ModelGradeResult = JSON.parse(resp)
   console.log(`graded ${testCase}`)
   console.log(gradeResult)
 
-  return gradeResult.score
+  return gradeResult
 }
 
 async function runTestCase(testCase: string): Promise<EvalResult> {
-  // get response from claude
   console.log(`evaling testcase ${testCase}`)
   const output = await client.chat(
     [
@@ -68,13 +66,16 @@ async function runTestCase(testCase: string): Promise<EvalResult> {
       }
     ]
   )
+  
   // TODO grading
-  const modelScore = await gradeWithModel(testCase, output)
+  const modelGradeResult = await gradeWithModel(testCase, output)
+  const score = modelGradeResult.score
   
   return {
     output: output,
     testCase: testCase,
-    score: modelScore
+    score: score,
+    reasoning: modelGradeResult.reasoning
   }
 }
 
@@ -88,15 +89,14 @@ const tasks: Task[] = JSON.parse(text)
 console.log(`${tasks.length} task(s) found`)
 
 
-
-
 // eval loop
 console.log("starting eval loop")
-
-
-
 console.log("################################")
+
 const evalResults = await runEvals(tasks)
 console.log("evals completed")
 console.log(evalResults)
+
+const totalScore = evalResults.reduce((acc, r) => acc + r.score, 0)
+console.log("average score", totalScore / evalResults.length)
 
