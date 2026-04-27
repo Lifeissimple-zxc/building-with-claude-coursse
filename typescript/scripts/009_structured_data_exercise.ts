@@ -1,6 +1,5 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import { ClientWithMessageHistory } from "../anthropic/client.js"                                                  
-import { rootCertificates } from "node:tls"
 
 const client = new ClientWithMessageHistory(
   new Anthropic(),

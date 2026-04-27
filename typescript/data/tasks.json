@@ -1,0 +1,11 @@
+[
+    {
+        "task": "Write a Python function that takes an AWS ARN string and extracts the service name from it. For example, from 'arn:aws:ec2:us-east-1:123456789012:instance/i-1234567890abcdef0' it should return 'ec2'."
+    },
+    {
+        "task": "Create a JSON object that defines an AWS IAM policy allowing read-only access to a specific S3 bucket named 'my-company-logs'. The policy should allow s3:GetObject and s3:ListBucket actions."
+    },
+    {
+        "task": "Write a regex pattern that validates AWS Access Key IDs, which start with 'AKIA' or 'ASIA' followed by exactly 16 alphanumeric characters."
+    }
+]
