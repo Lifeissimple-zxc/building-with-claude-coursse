@@ -15,7 +15,11 @@ each representing task that requires Python, JSON or a Regex to complete.
 
 Example output:
 [
-  {"task": "Description of task", "format": "python" or "json" or "regex"},
+  {
+    "task": "Description of task",
+    "format": "python" or "json" or "regex",
+    "solutionCriteria": "description of what a successful response to a task should look like, 1 or 2 sentences tops.
+  },
   ...additional
 ]
 

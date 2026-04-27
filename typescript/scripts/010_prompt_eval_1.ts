@@ -7,6 +7,7 @@ import { validateOutput, type Format } from "../anthropic/validation/validation.
 interface Task {
   task: string
   format: Format
+  solutionCriteria: string
 }
 
 interface EvalResult {
@@ -16,11 +17,8 @@ interface EvalResult {
   reasoning: string
 }
 
-const client = new Client(
-  new Anthropic(),
-  "claude-sonnet-4-5",
-  1000,
-)
+const anthropic = new Anthropic()
+const newClient = () => new Client(anthropic, "claude-sonnet-4-5", 1000)
 
 const getPrompt = (task: string) => {
   return `
@@ -32,8 +30,13 @@ const getPrompt = (task: string) => {
   `
 }
 
-async function gradeWithModel(testCase: string, output: string): Promise<ModelGradeResult> {
-  const gradingPrompt = getJudgeSystemPrompt(testCase, output)
+async function gradeWithModel(
+  client: Client,
+  testCase: string,
+  output: string,
+  successCriteria: string
+): Promise<ModelGradeResult> {
+  const gradingPrompt = getJudgeSystemPrompt(testCase, output, successCriteria)
   const resp = await client.chat(
     [
       {
@@ -58,15 +61,13 @@ async function gradeWithModel(testCase: string, output: string): Promise<ModelGr
   )
 
   const gradeResult: ModelGradeResult = JSON.parse(resp)
-  console.log(`graded ${testCase}`)
-  console.log(gradeResult)
-
   return gradeResult
 }
 
-async function runTestCase(testCase: string, format: Format): Promise<EvalResult> {
+async function runTestCase(testCase: string, format: Format, successCriteria: string): Promise<EvalResult> {
   console.log(`evaling testcase ${testCase}`)
-  const output = await client.chat(
+  const taskClient = newClient()
+  const output = await taskClient.chat(
     [
       {
         content: getPrompt(testCase),
@@ -79,8 +80,7 @@ async function runTestCase(testCase: string, format: Format): Promise<EvalResult
     `}
   )
   
-  // TODO grading
-  const modelGradeResult = await gradeWithModel(testCase, output)
+  const modelGradeResult = await gradeWithModel(newClient(), testCase, output, successCriteria)
   const syntaxScore = validateOutput(output, format)
   const score = (modelGradeResult.score + syntaxScore) / 2
   
@@ -93,7 +93,7 @@ async function runTestCase(testCase: string, format: Format): Promise<EvalResult
 }
 
 async function runEvals(tasks: Task[]): Promise<EvalResult[]> {
-  return Promise.all(tasks.map(t => runTestCase(t.task, t.format)))
+  return Promise.all(tasks.map(t => runTestCase(t.task, t.format, t.solutionCriteria)))
 }
 
 const text = await readFile("data/tasks.json", "utf-8")
@@ -108,7 +108,6 @@ console.log("################################")
 
 const evalResults = await runEvals(tasks)
 console.log("evals completed")
-console.log(evalResults)
 
 const totalScore = evalResults.reduce((acc, r) => acc + r.score, 0)
 console.log("average score", totalScore / evalResults.length)

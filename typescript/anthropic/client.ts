@@ -63,6 +63,9 @@ export class Client {
 
     const resp = await this.client.messages.create(this.buildBody(params))
     const content = resp.content[0]
+    if (!content) {
+      throw `empty content array (stop_reason=${resp.stop_reason})`
+    }
     if (content.type !== 'text') {
       throw `expected text message type, got: ${content.type}`
     }

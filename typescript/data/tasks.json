@@ -1,14 +1,17 @@
 [
     {
-        "task": "Write a Python function that takes an AWS ARN string and extracts the service name from it. For example, from 'arn:aws:ec2:us-east-1:123456789012:instance/i-1234567890abcdef0' it should return 'ec2'.",
-        "format": "python"
+        "task": "Write a Python function that takes an S3 bucket ARN and extracts just the bucket name from it",
+        "format": "python",
+        "solutionCriteria": "The function should parse ARNs in the format 'arn:aws:s3:::bucket-name' and return only the bucket name string."
     },
     {
-        "task": "Create a JSON object that defines an AWS IAM policy allowing read-only access to a specific S3 bucket named 'my-company-data'. The policy should allow s3:GetObject and s3:ListBucket actions.",
-        "format": "json"
+        "task": "Create a JSON policy document that allows read-only access to a specific S3 bucket for a given IAM role",
+        "format": "json",
+        "solutionCriteria": "The JSON should be a valid IAM policy with Version, Statement, Effect set to Allow, actions for s3:GetObject and s3:ListBucket, and a Resource field specifying the bucket ARN."
     },
     {
-        "task": "Write a regex pattern that validates AWS access key IDs, which start with 'AKIA' or 'ASIA' followed by 16 alphanumeric characters (uppercase letters and numbers only).",
-        "format": "regex"
+        "task": "Write a regex pattern that validates AWS region codes like us-east-1, eu-west-2, ap-southeast-1",
+        "format": "regex",
+        "solutionCriteria": "The regex should match valid AWS region formats consisting of a geographic area, cardinal direction, and number, separated by hyphens."
     }
 ]
