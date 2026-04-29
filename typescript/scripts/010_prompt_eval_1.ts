@@ -1,20 +1,14 @@
 import { readFile } from "node:fs/promises"
-import { Client } from "../anthropic/client.js"
+import { Client } from "../anthropic/client"
 import { Anthropic } from "@anthropic-ai/sdk"
-import { getJudgeSystemPrompt, ModelGradeResult } from "../anthropic/prompts/prompts.js"
-import { validateOutput, type Format } from "../anthropic/validation/validation.js"
+import { getJudgeSystemPrompt, ModelGradeResult } from "../anthropic/prompts/prompts"
+import { validateOutput, type Format } from "../anthropic/validation/validation"
+import type { EvalResult } from "../anthropic/types"
 
 interface Task {
   task: string
   format: Format
   solutionCriteria: string
-}
-
-interface EvalResult {
-  output: string
-  testCase: string
-  score: number
-  reasoning: string
 }
 
 const anthropic = new Anthropic()
@@ -86,7 +80,11 @@ async function runTestCase(testCase: string, format: Format, successCriteria: st
   
   return {
     output: output,
-    testCase: testCase,
+    testCase: {
+      scenario: testCase,
+      promptInputs: { task: testCase },
+      solutionCriteria: [successCriteria]
+    },
     score: score,
     reasoning: modelGradeResult.reasoning
   }
