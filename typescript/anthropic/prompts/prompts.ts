@@ -1,5 +1,5 @@
 export interface ModelGradeResult {
-  strenghts: string[]
+  strengths: string[]
   weaknesses: string[]
   reasoning: string
   score: number
