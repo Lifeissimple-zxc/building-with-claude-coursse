@@ -1,9 +1,9 @@
-import { writeFile } from "node:fs/promises"
+import { writeFile, readFile } from "node:fs/promises"
 import { MessageParam } from "@anthropic-ai/sdk/resources"
 import { Client } from "../client"
 import type { TestCase, EvalResult, RunPromptFunction } from "../types"
 import type { ModelGradeResult } from "./prompts"
-import { readFile } from "node:fs/promises"
+import { generatePromptEvaluationReport } from "./report"
 
 export class PromptEvaluator {
   maxConcurrentTasks: number
@@ -361,11 +361,27 @@ export class PromptEvaluator {
     htmlOutputFile: string ="output.html",
   ): Promise<EvalResult[]> {
     const fileData = await readFile(datasetFile, "utf-8")
+    const testCases: TestCase[] = JSON.parse(fileData)
 
-    const results: EvalResult[] = []
-    // TODO
+    console.log(`starting eval for ${testCases.length} test cases`)
 
+    const results = await mapWithConcurrency(
+      testCases,
+      this.maxConcurrentTasks,
+      (tc) => this.runTestCase(tc, runPromptFunc, extraCriteria)
+    )
 
+    const totalScore = results.reduce((acc, r) => acc + r.score, 0)
+    const avgScore = totalScore / results.length
+    console.log(`avg score ${avgScore}`)
+
+    await writeFile(jsonOutputFile, JSON.stringify(results))
+
+    const html = generatePromptEvaluationReport(results)
+    await writeFile(htmlOutputFile, html)
+    console.log("results html saved")
+
+    return results
   }
 }
 
