@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Evaluation Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .header {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .summary-stats {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .stat-box {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex-basis: 30%;
+            min-width: 200px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th {
+            background-color: #4a4a4a;
+            color: white;
+            text-align: left;
+            padding: 12px;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+            width: 20%;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .output-cell {
+            white-space: pre-wrap;
+        }
+        .score {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .score-high {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+        .score-medium {
+            background-color: #fff9c4;
+            color: #f57f17;
+        }
+        .score-low {
+            background-color: #ffcdd2;
+            color: #c62828;
+        }
+        .output {
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+        .output pre {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #333;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .score-col {
+            width: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Prompt Evaluation Report</h1>
+        <div class="summary-stats">
+            <div class="stat-box">
+                <div>Total Test Cases</div>
+                <div class="stat-value">4</div>
+            </div>
+            <div class="stat-box">
+                <div>Average Score</div>
+                <div class="stat-value">7.5 / 10</div>
+            </div>
+            <div class="stat-box">
+                <div>Pass Rate (≥7)</div>
+                <div class="stat-value">75.0%</div>
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Scenario</th>
+                <th>Prompt Inputs</th>
+                <th>Solution Criteria</th>
+                <th>Output</th>
+                <th>Score</th>
+                <th>Reasoning</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Testing with interdisciplinary passage containing multiple overlapping topics (biology, chemistry, and environmental science) to verify accurate extraction of distinct topics</td>
+                <td class="prompt-inputs"><strong>content:</strong> Recent advances in bioremediation demonstrate the convergence of microbial ecology, geochemistry, and environmental restoration. Certain bacterial species, particularly Pseudomonas aeruginosa, exhibit remarkable capacity to degrade persistent organic pollutants through enzymatic pathways that cleave carbon-halogen bonds, a process enhanced when soil pH and dissolved oxygen concentrations are optimized. These microorganisms interact with soil mineral matrices through biosorption mechanisms, whereby heavy metal ions are sequestered in extracellular polymeric substances, simultaneously altering soil chemistry and reducing contaminant bioavailability. Field trials conducted in contaminated aquifers have revealed that indigenous microbial communities can be stimulated through nutrient amendment strategies, leading to in situ degradation of chlorinated hydrocarbons while maintaining ecosystem stability. The integration of molecular biology techniques with hydrogeological modeling has enabled prediction of remediation timescales and assessment of potential secondary chemical reactions that may produce toxic intermediates.</td>
+                <td class="criteria">• Extraction includes distinct topics from biology (microbial ecology, enzymatic pathways, biosorption), chemistry (geochemistry, carbon-halogen bonds, heavy metals), and environmental science (bioremediation, contaminant degradation, aquifer restoration)<br>• Topics are presented as separate string entries in a JSON array without duplication or excessive granularity<br>• Extracted topics accurately represent the main subjects discussed without omitting significant conceptual areas covered in the passage</td>
+                <td class="output"><pre>Based on the passage, here are the main topics:
+
+```json
+[
+  &quot;Bioremediation&quot;,
+  &quot;Microbial ecology&quot;,
+  &quot;Geochemistry&quot;,
+  &quot;Environmental restoration&quot;,
+  &quot;Bacterial degradation of pollutants&quot;,
+  &quot;Enzymatic pathways&quot;,
+  &quot;Biosorption mechanisms&quot;,
+  &quot;Heavy metal sequestration&quot;,
+  &quot;Soil chemistry&quot;,
+  &quot;Aquifer remediation&quot;,
+  &quot;Nutrient amendment strategies&quot;,
+  &quot;Chlorinated hydrocarbon degradation&quot;,
+  &quot;Molecular biology techniques&quot;,
+  &quot;Hydrogeological modeling&quot;
+]
+```
+
+These topics span the three main disciplinary areas highlighted in the passage: biology (microbial ecology, enzymatic pathways, bacterial processes), chemistry (geochemistry, soil chemistry, biosorption), and environmental science (environmental restoration, aquifer remediation, ecosystem stability).</pre></td>
+                <td class="score-col"><span class="score score-low">3</span></td>
+                <td class="reasoning">The solution provides a comprehensive and well-structured JSON array of topics that meets the secondary criteria effectively. However, it critically violates a mandatory requirement by including explanatory commentary after the JSON array. The instructions explicitly state the response should be &#039;the JSON array and NOTHING else,&#039; and this solution adds a paragraph of explanation. This is an automatic failure condition per the mandatory requirements specification.</td>
+            </tr>
+            <tr>
+                <td>Testing with dense philosophical or theoretical text containing abstract concepts and implicit topics to assess extraction of non-obvious or implied subjects</td>
+                <td class="prompt-inputs"><strong>content:</strong> The phenomenological approach to consciousness interrogates the relationship between subjective experience and ontological presence, challenging the Cartesian dichotomy that privileges mental substance over material instantiation. Heidegger&#039;s conception of Being-in-the-world dissolves the subject-object binary by positing that consciousness is fundamentally constituted through its embeddedness in practical engagement with entities. This framework implicitly addresses questions of intentionality, the nature of temporal experience, and the constitution of meaning through intersubjective relations. The critique of representationalism embedded within this trajectory suggests that knowledge does not arise from internal mental representations corresponding to external reality, but rather through a primordial openness to the disclosure of beings. Contemporary phenomenological investigations extend these insights to examine how embodied practices structure perception and how the lifeworld serves as the prereflective ground for all theoretical knowledge claims.</td>
+                <td class="criteria">• Extraction identifies both explicit topics (phenomenology, consciousness, Being-in-the-world, intentionality) and implicit or underlying concepts (subject-object relations, representationalism, embodiment, intersubjectivity)<br>• Topics are presented as distinct string entries in a JSON array without requiring excessive interpretation or speculation<br>• Extracted topics capture the core philosophical concerns and conceptual frameworks discussed throughout the passage</td>
+                <td class="output"><pre>```json
+[
+  &quot;Phenomenology&quot;,
+  &quot;Consciousness&quot;,
+  &quot;Subjective experience&quot;,
+  &quot;Ontological presence&quot;,
+  &quot;Cartesian dualism&quot;,
+  &quot;Being-in-the-world&quot;,
+  &quot;Subject-object relations&quot;,
+  &quot;Intentionality&quot;,
+  &quot;Temporal experience&quot;,
+  &quot;Intersubjectivity&quot;,
+  &quot;Representationalism&quot;,
+  &quot;Embodied practices&quot;,
+  &quot;Perception&quot;,
+  &quot;Lifeworld&quot;
+]
+```</pre></td>
+                <td class="score-col"><span class="score score-high">10</span></td>
+                <td class="reasoning">The solution fully satisfies all mandatory requirements by providing only a properly formatted JSON array of strings with no extra commentary. It meets all secondary criteria by identifying both explicit and implicit topics, maintaining appropriate granularity, and capturing the core philosophical concerns of the passage. The extraction demonstrates strong comprehension of the phenomenological concepts discussed.</td>
+            </tr>
+            <tr>
+                <td>Testing with empirical research passage heavy in quantitative methodology and statistical terminology to evaluate topic extraction from data-driven scholarly content</td>
+                <td class="prompt-inputs"><strong>content:</strong> A longitudinal cohort study examined the relationship between sleep duration and cardiovascular outcomes in 8,547 participants over a 12-year period using Cox proportional hazards regression models. Baseline sleep patterns were assessed via actigraphy and self-reported questionnaires, with participants stratified into quartiles based on nightly sleep duration (mean ± SD: 5.2 ± 0.8 hours to 8.1 ± 0.9 hours). Multivariate analysis controlling for age, BMI, hypertension status, and smoking history revealed a significant U-shaped association between sleep duration and myocardial infarction risk (hazard ratio 1.48, 95% CI 1.12–1.95 for shortest quartile; HR 1.31, 95% CI 0.98–1.75 for longest quartile, p&lt;0.001). Stratified analyses by gender demonstrated stronger associations in women (p-interaction=0.032), while mediation analysis suggested that inflammatory biomarkers (CRP, IL-6) accounted for approximately 34% of the observed effect. Sensitivity analyses excluding participants with baseline cardiovascular disease or sleep disorders yielded consistent findings, confirming the robustness of the primary results.</td>
+                <td class="criteria">• Extraction identifies main research topics including sleep duration, cardiovascular outcomes, regression modeling, and biomarkers without treating statistical methods as primary topics<br>• Topics are presented as distinct string entries in a JSON array<br>• Extracted topics represent the substantive research domains and study variables rather than focusing exclusively on methodological terminology</td>
+                <td class="output"><pre>```json
+[
+  &quot;Sleep duration&quot;,
+  &quot;Cardiovascular outcomes&quot;,
+  &quot;Longitudinal cohort study&quot;,
+  &quot;Cox proportional hazards regression&quot;,
+  &quot;Sleep patterns&quot;,
+  &quot;Myocardial infarction risk&quot;,
+  &quot;Multivariate analysis&quot;,
+  &quot;Gender differences&quot;,
+  &quot;Inflammatory biomarkers&quot;,
+  &quot;Mediation analysis&quot;,
+  &quot;Sensitivity analysis&quot;
+]
+```</pre></td>
+                <td class="score-col"><span class="score score-high">8</span></td>
+                <td class="reasoning">The solution meets all mandatory requirements by providing only a properly formatted JSON array without commentary. It satisfies the secondary criteria by emphasizing substantive research domains over pure methodology, though it does include some methodological terms. The extraction captures the main research focus on sleep-cardiovascular relationships and biomarkers. The omission of some control variables is a minor weakness but does not significantly detract from the overall quality of topic extraction.</td>
+            </tr>
+            <tr>
+                <td>Testing with historical or literary analysis passage with specialized domain vocabulary and nuanced thematic elements to ensure capture of subtle topical distinctions</td>
+                <td class="prompt-inputs"><strong>content:</strong> The narrative structure of Victorian melodrama reveals a complex interplay between moral didacticism and aesthetic formalism, wherein the protagonist&#039;s descent into pathos becomes inseparable from questions of social class and industrial displacement. Dickens&#039;s treatment of the fallen woman motif in his later novels demonstrates a tension between sentimentalism and social critique, where the figure of the orphan or abandoned child serves simultaneously as an emblem of Christian redemption and a vehicle for examining systemic poverty. The Gothic sublime, inherited from Romantic precursors, undergoes significant transformation through the incorporation of urban settings and technological anxieties, as evidenced in the railway scenes that punctuate mid-century fiction. Intertextual echoes of Shakespearean tragedy, particularly the language of fate and tragic flaw, are reconfigured within a framework of economic determinism, suggesting that character is not merely individual destiny but rather a product of material conditions. The aesthetic category of the picturesque, when applied to representations of industrial landscapes, reveals ideological contradictions inherent in the period&#039;s cultural imagination of progress and modernity.</td>
+                <td class="criteria">• Extraction identifies distinct literary and historical topics including narrative structure, character archetypes (fallen woman, orphan), aesthetic movements (Gothic sublime, picturesque), and thematic concerns (social class, industrialization, redemption)<br>• Topics are presented as separate string entries in a JSON array without conflating thematically related but conceptually distinct elements<br>• Extracted topics capture specialized literary terminology and historical periodization while distinguishing between formal aesthetic concepts and thematic preoccupations</td>
+                <td class="output"><pre>```json
+[
+  &quot;Victorian melodrama&quot;,
+  &quot;Narrative structure&quot;,
+  &quot;Moral didacticism&quot;,
+  &quot;Aesthetic formalism&quot;,
+  &quot;Pathos&quot;,
+  &quot;Social class&quot;,
+  &quot;Industrial displacement&quot;,
+  &quot;Fallen woman motif&quot;,
+  &quot;Sentimentalism&quot;,
+  &quot;Social critique&quot;,
+  &quot;Orphan figure&quot;,
+  &quot;Christian redemption&quot;,
+  &quot;Systemic poverty&quot;,
+  &quot;Gothic sublime&quot;,
+  &quot;Romantic tradition&quot;,
+  &quot;Urban settings&quot;,
+  &quot;Technological anxiety&quot;,
+  &quot;Shakespearean tragedy&quot;,
+  &quot;Economic determinism&quot;,
+  &quot;Character and destiny&quot;,
+  &quot;Picturesque aesthetic&quot;,
+  &quot;Industrial landscapes&quot;,
+  &quot;Progress and modernity&quot;
+]
+```</pre></td>
+                <td class="score-col"><span class="score score-high">9</span></td>
+                <td class="reasoning">The solution fully satisfies all mandatory requirements by providing only a properly formatted JSON array without commentary. It meets the secondary criteria by identifying distinct literary and historical topics across multiple categories and distinguishing between formal aesthetic concepts and thematic concerns. The extraction demonstrates strong comprehension of specialized literary terminology and historical periodization. While some entries represent minor supporting details or could be considered slightly granular, the overall extraction captures the core topics and maintains appropriate conceptual distinctions.</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
