@@ -48,3 +48,9 @@ First two lines of the prompt are the most important. Start with a verb. Example
 
 #### Being Specific
 Every prompt needs to have guidelines. These can either be qualities that the output has to have OR steps for the model to follow. More often than not the two are combined.
+
+#### XML tags
+Good when we pass a lot of context inside it. Tags are delimiters for Claude. They help the model understand the semantics of the info inside of the tags.
+
+#### Examples (one and multi shot prompting)
+Acc to the course, it's the most effective technique. When giving examples, it's smart to provide both regular and corner cases. In addition, it's useful to provide reasoning explaining WHAT makes and ideal example ideal.
