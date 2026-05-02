@@ -112,7 +112,7 @@
             </div>
             <div class="stat-box">
                 <div>Average Score</div>
-                <div class="stat-value">7.5 / 10</div>
+                <div class="stat-value">8.3 / 10</div>
             </div>
             <div class="stat-box">
                 <div>Pass Rate (≥7)</div>
@@ -137,30 +137,38 @@
                 <td>Testing with interdisciplinary passage containing multiple overlapping topics (biology, chemistry, and environmental science) to verify accurate extraction of distinct topics</td>
                 <td class="prompt-inputs"><strong>content:</strong> Recent advances in bioremediation demonstrate the convergence of microbial ecology, geochemistry, and environmental restoration. Certain bacterial species, particularly Pseudomonas aeruginosa, exhibit remarkable capacity to degrade persistent organic pollutants through enzymatic pathways that cleave carbon-halogen bonds, a process enhanced when soil pH and dissolved oxygen concentrations are optimized. These microorganisms interact with soil mineral matrices through biosorption mechanisms, whereby heavy metal ions are sequestered in extracellular polymeric substances, simultaneously altering soil chemistry and reducing contaminant bioavailability. Field trials conducted in contaminated aquifers have revealed that indigenous microbial communities can be stimulated through nutrient amendment strategies, leading to in situ degradation of chlorinated hydrocarbons while maintaining ecosystem stability. The integration of molecular biology techniques with hydrogeological modeling has enabled prediction of remediation timescales and assessment of potential secondary chemical reactions that may produce toxic intermediates.</td>
                 <td class="criteria">• Extraction includes distinct topics from biology (microbial ecology, enzymatic pathways, biosorption), chemistry (geochemistry, carbon-halogen bonds, heavy metals), and environmental science (bioremediation, contaminant degradation, aquifer restoration)<br>• Topics are presented as separate string entries in a JSON array without duplication or excessive granularity<br>• Extracted topics accurately represent the main subjects discussed without omitting significant conceptual areas covered in the passage</td>
-                <td class="output"><pre>Based on the passage, here are the main topics:
-
-```json
+                <td class="output"><pre>```json
 [
   &quot;Bioremediation&quot;,
   &quot;Microbial ecology&quot;,
   &quot;Geochemistry&quot;,
   &quot;Environmental restoration&quot;,
-  &quot;Bacterial degradation of pollutants&quot;,
+  &quot;Bacterial species&quot;,
+  &quot;Pseudomonas aeruginosa&quot;,
+  &quot;Persistent organic pollutants&quot;,
   &quot;Enzymatic pathways&quot;,
-  &quot;Biosorption mechanisms&quot;,
-  &quot;Heavy metal sequestration&quot;,
+  &quot;Carbon-halogen bonds&quot;,
+  &quot;Soil pH&quot;,
+  &quot;Dissolved oxygen&quot;,
+  &quot;Biosorption&quot;,
+  &quot;Heavy metals&quot;,
+  &quot;Extracellular polymeric substances&quot;,
   &quot;Soil chemistry&quot;,
+  &quot;Contaminant bioavailability&quot;,
   &quot;Aquifer remediation&quot;,
-  &quot;Nutrient amendment strategies&quot;,
-  &quot;Chlorinated hydrocarbon degradation&quot;,
-  &quot;Molecular biology techniques&quot;,
-  &quot;Hydrogeological modeling&quot;
+  &quot;Indigenous microbial communities&quot;,
+  &quot;Nutrient amendment&quot;,
+  &quot;In situ degradation&quot;,
+  &quot;Chlorinated hydrocarbons&quot;,
+  &quot;Ecosystem stability&quot;,
+  &quot;Molecular biology&quot;,
+  &quot;Hydrogeological modeling&quot;,
+  &quot;Remediation timescales&quot;,
+  &quot;Toxic intermediates&quot;
 ]
-```
-
-These topics span the three main disciplinary areas highlighted in the passage: biology (microbial ecology, enzymatic pathways, bacterial processes), chemistry (geochemistry, soil chemistry, biosorption), and environmental science (environmental restoration, aquifer remediation, ecosystem stability).</pre></td>
-                <td class="score-col"><span class="score score-low">3</span></td>
-                <td class="reasoning">The solution provides a comprehensive and well-structured JSON array of topics that meets the secondary criteria effectively. However, it critically violates a mandatory requirement by including explanatory commentary after the JSON array. The instructions explicitly state the response should be &#039;the JSON array and NOTHING else,&#039; and this solution adds a paragraph of explanation. This is an automatic failure condition per the mandatory requirements specification.</td>
+```</pre></td>
+                <td class="score-col"><span class="score score-high">9</span></td>
+                <td class="reasoning">The solution fully satisfies all mandatory requirements: it provides a properly formatted JSON array of strings containing topics from the article with no extra commentary. It exceeds secondary criteria by identifying topics across all three disciplinary domains mentioned in the evaluation criteria (biology, chemistry, environmental science), maintaining appropriate granularity without excessive fragmentation, and accurately representing the main subjects discussed. The extraction is comprehensive and well-balanced, capturing both foundational concepts and specific technical mechanisms. The only minor issue is slight conceptual overlap between a few entries, but this does not significantly detract from the overall quality.</td>
             </tr>
             <tr>
                 <td>Testing with dense philosophical or theoretical text containing abstract concepts and implicit topics to assess extraction of non-obvious or implied subjects</td>
@@ -185,7 +193,7 @@ These topics span the three main disciplinary areas highlighted in the passage: 
 ]
 ```</pre></td>
                 <td class="score-col"><span class="score score-high">10</span></td>
-                <td class="reasoning">The solution fully satisfies all mandatory requirements by providing only a properly formatted JSON array of strings with no extra commentary. It meets all secondary criteria by identifying both explicit and implicit topics, maintaining appropriate granularity, and capturing the core philosophical concerns of the passage. The extraction demonstrates strong comprehension of the phenomenological concepts discussed.</td>
+                <td class="reasoning">The solution fully satisfies all mandatory requirements by providing a properly formatted JSON array containing only topic strings with no additional commentary. It exceeds secondary criteria by identifying both explicit and implicit topics across the passage, maintaining appropriate conceptual granularity, and capturing the essential philosophical frameworks discussed. The 14 extracted topics comprehensively represent the phenomenological discourse without requiring excessive interpretation. The only minor considerations are the omission of &#039;Heidegger&#039; as a named philosopher and potentially &#039;Practical engagement&#039; as a concept, but these are not significant deficiencies given the strong overall extraction quality.</td>
             </tr>
             <tr>
                 <td>Testing with empirical research passage heavy in quantitative methodology and statistical terminology to evaluate topic extraction from data-driven scholarly content</td>
@@ -197,17 +205,27 @@ These topics span the three main disciplinary areas highlighted in the passage: 
   &quot;Cardiovascular outcomes&quot;,
   &quot;Longitudinal cohort study&quot;,
   &quot;Cox proportional hazards regression&quot;,
-  &quot;Sleep patterns&quot;,
-  &quot;Myocardial infarction risk&quot;,
+  &quot;Actigraphy&quot;,
+  &quot;Sleep assessment&quot;,
+  &quot;Myocardial infarction&quot;,
+  &quot;U-shaped association&quot;,
+  &quot;Hazard ratio&quot;,
   &quot;Multivariate analysis&quot;,
+  &quot;Age&quot;,
+  &quot;BMI&quot;,
+  &quot;Hypertension&quot;,
+  &quot;Smoking&quot;,
   &quot;Gender differences&quot;,
   &quot;Inflammatory biomarkers&quot;,
+  &quot;C-reactive protein&quot;,
+  &quot;Interleukin-6&quot;,
   &quot;Mediation analysis&quot;,
-  &quot;Sensitivity analysis&quot;
+  &quot;Sensitivity analysis&quot;,
+  &quot;Sleep disorders&quot;
 ]
 ```</pre></td>
-                <td class="score-col"><span class="score score-high">8</span></td>
-                <td class="reasoning">The solution meets all mandatory requirements by providing only a properly formatted JSON array without commentary. It satisfies the secondary criteria by emphasizing substantive research domains over pure methodology, though it does include some methodological terms. The extraction captures the main research focus on sleep-cardiovascular relationships and biomarkers. The omission of some control variables is a minor weakness but does not significantly detract from the overall quality of topic extraction.</td>
+                <td class="score-col"><span class="score score-medium">6</span></td>
+                <td class="reasoning">The solution fully satisfies all mandatory requirements by providing a properly formatted JSON array of strings with no additional commentary. However, it has notable deficiencies in secondary criteria. The secondary criteria explicitly state that topics should represent &#039;substantive research domains and study variables rather than focusing exclusively on methodological terminology.&#039; The solution includes 5 methodological terms (Cox regression, multivariate analysis, mediation analysis, sensitivity analysis, actigraphy) that dominate the extraction and could be considered over-emphasis on methods. Additionally, listing individual confounding variables separately (Age, BMI, Hypertension, Smoking) fragments what could be understood as a single conceptual category of &#039;confounding variables&#039; or &#039;cardiovascular risk factors,&#039; reducing focus on substantive domains. The extraction is competent but misaligned with the stated preference for substantive over methodological emphasis.</td>
             </tr>
             <tr>
                 <td>Testing with historical or literary analysis passage with specialized domain vocabulary and nuanced thematic elements to ensure capture of subtle topical distinctions</td>
@@ -231,17 +249,22 @@ These topics span the three main disciplinary areas highlighted in the passage: 
   &quot;Gothic sublime&quot;,
   &quot;Romantic tradition&quot;,
   &quot;Urban settings&quot;,
-  &quot;Technological anxiety&quot;,
+  &quot;Technological anxieties&quot;,
+  &quot;Railway imagery&quot;,
   &quot;Shakespearean tragedy&quot;,
+  &quot;Fate and tragic flaw&quot;,
   &quot;Economic determinism&quot;,
-  &quot;Character and destiny&quot;,
-  &quot;Picturesque aesthetic&quot;,
+  &quot;Character development&quot;,
+  &quot;Material conditions&quot;,
+  &quot;Picturesque&quot;,
   &quot;Industrial landscapes&quot;,
-  &quot;Progress and modernity&quot;
+  &quot;Progress and modernity&quot;,
+  &quot;Cultural ideology&quot;,
+  &quot;Dickens&quot;
 ]
 ```</pre></td>
-                <td class="score-col"><span class="score score-high">9</span></td>
-                <td class="reasoning">The solution fully satisfies all mandatory requirements by providing only a properly formatted JSON array without commentary. It meets the secondary criteria by identifying distinct literary and historical topics across multiple categories and distinguishing between formal aesthetic concepts and thematic concerns. The extraction demonstrates strong comprehension of specialized literary terminology and historical periodization. While some entries represent minor supporting details or could be considered slightly granular, the overall extraction captures the core topics and maintains appropriate conceptual distinctions.</td>
+                <td class="score-col"><span class="score score-high">8</span></td>
+                <td class="reasoning">The solution fully satisfies all mandatory requirements by providing a properly formatted JSON array of strings containing topics from the passage with no additional commentary. It strongly meets secondary criteria by identifying distinct literary and historical topics, maintaining appropriate conceptual separation between formal aesthetic concepts (Gothic sublime, picturesque, narrative structure) and thematic preoccupations (social class, redemption, poverty), and capturing specialized terminology with historical periodization. The extraction demonstrates strong comprehension of Victorian literary studies. The primary weakness is the inclusion of &#039;Character development&#039; as a topic, which represents an interpretive addition not explicitly discussed in the passage. The passage discusses character as determined by material conditions, not character development as a literary concern. This is a minor but notable deviation from strict extraction principles.</td>
             </tr>
         </tbody>
     </table>
