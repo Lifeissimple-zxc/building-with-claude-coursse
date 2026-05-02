@@ -1,11 +1,6 @@
-import { Anthropic } from "@anthropic-ai/sdk"
-import { Client } from "../anthropic/client.js"                                                  
+import { Client } from "../anthropic/client.js"
 
-const client = new Client(
-  new Anthropic(),
-  "claude-sonnet-4-6",
-  1000,
-)
+const client = new Client("claude-sonnet-4-6", 1000)
 
 const prompt = "Generate three different sample AWS CLI commands. Each should be very short."
 const formatPrompt = "The commands have to be short. There must not be any comments or explanation. The command list need to be ready to be pasted to the AWS CLI without any string processing."

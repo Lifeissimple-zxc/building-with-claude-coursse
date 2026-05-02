@@ -1,6 +1,5 @@
 import { readFile } from "node:fs/promises"
 import { Client } from "../anthropic/client"
-import { Anthropic } from "@anthropic-ai/sdk"
 import { getJudgeSystemPrompt, ModelGradeResult } from "../anthropic/prompts/prompts"
 import { validateOutput, type Format } from "../anthropic/validation/validation"
 import type { EvalResult } from "../anthropic/types"
@@ -11,8 +10,7 @@ interface Task {
   solutionCriteria: string
 }
 
-const anthropic = new Anthropic()
-const newClient = () => new Client(anthropic, "claude-sonnet-4-5", 1000)
+const newClient = () => new Client("claude-sonnet-4-5", 1000)
 
 const getPrompt = (task: string) => {
   return `

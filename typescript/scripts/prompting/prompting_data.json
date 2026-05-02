@@ -1,0 +1,61 @@
+[
+  {
+    "scenario": "Testing with a petite endurance athlete (155cm, 50kg) training for a marathon with vegan dietary restrictions",
+    "taskDescription": "Write a compact concise 1 day meal plan for a single athlete",
+    "promptInputs": {
+      "height": "155",
+      "weight": "50",
+      "goal": "Training for a marathon",
+      "restrictions": "Vegan"
+    },
+    "solutionCriteria": [
+      "Includes breakfast, lunch, dinner, and snacks",
+      "All meals are vegan (no animal products)",
+      "Meal plan is appropriate for endurance training energy needs"
+    ]
+  },
+  {
+    "scenario": "Testing with a heavyweight powerlifter (195cm, 115kg) aiming for muscle gain with lactose intolerance and nut allergies",
+    "taskDescription": "Write a compact concise 1 day meal plan for a single athlete",
+    "promptInputs": {
+      "height": "195",
+      "weight": "115",
+      "goal": "Muscle gain",
+      "restrictions": "Lactose intolerance and nut allergies"
+    },
+    "solutionCriteria": [
+      "Includes breakfast, lunch, dinner, and snacks",
+      "All meals avoid dairy products and nuts",
+      "Meal plan is high in protein for muscle gain"
+    ]
+  },
+  {
+    "scenario": "Testing with an average-sized swimmer (172cm, 68kg) focusing on weight loss while avoiding gluten and shellfish",
+    "taskDescription": "Write a compact concise 1 day meal plan for a single athlete",
+    "promptInputs": {
+      "height": "172",
+      "weight": "68",
+      "goal": "Weight loss",
+      "restrictions": "No gluten and no shellfish"
+    },
+    "solutionCriteria": [
+      "Includes breakfast, lunch, dinner, and snacks",
+      "All meals avoid gluten and shellfish",
+      "Meal plan supports weight loss with appropriate calorie control"
+    ]
+  },
+  {
+    "scenario": "Testing with a tall basketball player (203cm, 92kg) maintaining current weight with no dietary restrictions",
+    "taskDescription": "Write a compact concise 1 day meal plan for a single athlete",
+    "promptInputs": {
+      "height": "203",
+      "weight": "92",
+      "goal": "Maintain current weight",
+      "restrictions": "None"
+    },
+    "solutionCriteria": [
+      "Includes breakfast, lunch, dinner, and snacks",
+      "Meal plan is appropriate for weight maintenance"
+    ]
+  }
+]

@@ -24,8 +24,8 @@ export class Client {
   model: string
   systemPrompt?: string
 
-  constructor(client: Anthropic, model: string, maxTokens: number) {
-    this.client = client
+  constructor(model: string, maxTokens: number, client?: Anthropic) {
+    this.client = client ?? new Anthropic()
     this.messageHistory = []
     this.model = model
     this.maxTokens = maxTokens

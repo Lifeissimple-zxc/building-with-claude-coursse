@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Evaluation Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .header {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .summary-stats {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .stat-box {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex-basis: 30%;
+            min-width: 200px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th {
+            background-color: #4a4a4a;
+            color: white;
+            text-align: left;
+            padding: 12px;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+            width: 20%;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .output-cell {
+            white-space: pre-wrap;
+        }
+        .score {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .score-high {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+        .score-medium {
+            background-color: #fff9c4;
+            color: #f57f17;
+        }
+        .score-low {
+            background-color: #ffcdd2;
+            color: #c62828;
+        }
+        .output {
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+        .output pre {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #333;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .score-col {
+            width: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Prompt Evaluation Report</h1>
+        <div class="summary-stats">
+            <div class="stat-box">
+                <div>Total Test Cases</div>
+                <div class="stat-value">4</div>
+            </div>
+            <div class="stat-box">
+                <div>Average Score</div>
+                <div class="stat-value">9.0 / 10</div>
+            </div>
+            <div class="stat-box">
+                <div>Pass Rate (≥7)</div>
+                <div class="stat-value">100.0%</div>
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Scenario</th>
+                <th>Prompt Inputs</th>
+                <th>Solution Criteria</th>
+                <th>Output</th>
+                <th>Score</th>
+                <th>Reasoning</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Testing with a tall heavyweight powerlifter focused on muscle gain with no dietary restrictions</td>
+                <td class="prompt-inputs"><strong>height:</strong> 193<br><strong>weight:</strong> 115<br><strong>goal:</strong> muscle gain<br><strong>restrictions:</strong> none</td>
+                <td class="criteria">• Includes breakfast, lunch, dinner, and at least one snack<br>• Meal plan is high in protein and calories appropriate for muscle gain<br>• Portions and meals are practical for a single day</td>
+                <td class="output"><pre># One-Day Meal Plan for Muscle Gain
+
+**Breakfast (7:00 AM)**
+- 4 whole eggs scrambled with cheese
+- 2 cups oatmeal with banana and honey
+- Glass of whole milk
+- *~950 calories, 50g protein*
+
+**Mid-Morning Snack (10:00 AM)**
+- Greek yogurt (300g) with granola
+- Handful of mixed nuts
+- *~500 calories, 30g protein*
+
+**Lunch (1:00 PM)**
+- 250g grilled chicken breast
+- 2 cups brown rice
+- Mixed vegetables (broccoli, carrots)
+- Olive oil drizzle
+- *~900 calories, 65g protein*
+
+**Pre-Workout Snack (4:00 PM)**
+- Protein shake with whole milk
+- 2 slices whole grain bread with peanut butter
+- *~550 calories, 40g protein*
+
+**Dinner (7:00 PM)**
+- 300g lean beef or salmon
+- 2 large sweet potatoes
+- Large mixed salad with avocado
+- *~1,000 calories, 70g protein*
+
+**Evening Snack (9:30 PM)**
+- Cottage cheese (200g)
+- Berries and almonds
+- *~350 calories, 30g protein*
+
+**Daily Totals: ~4,250 calories, 285g protein**
+
+*Drink 3-4 liters of water throughout the day*</pre></td>
+                <td class="score-col"><span class="score score-high">9</span></td>
+                <td class="reasoning">The solution meets all mandatory requirements by providing daily caloric total, macronutrient information (protein), and meals with foods, portions, and timing. It also satisfies all secondary criteria: includes breakfast, lunch, dinner, and multiple snacks; provides high protein and calories suitable for muscle gain; and presents practical portions for a single day. While the macronutrient breakdown could be more complete with carbs and fats, the mandatory requirement is met with protein data provided.</td>
+            </tr>
+            <tr>
+                <td>Testing with a petite endurance runner aiming for weight loss with multiple allergies (gluten, dairy, nuts)</td>
+                <td class="prompt-inputs"><strong>height:</strong> 158<br><strong>weight:</strong> 62<br><strong>goal:</strong> weight loss<br><strong>restrictions:</strong> gluten, dairy, nuts</td>
+                <td class="criteria">• Includes breakfast, lunch, dinner, and at least one snack<br>• All meals exclude gluten, dairy, and nuts<br>• Meal plan supports weight loss with appropriate calorie control</td>
+                <td class="output"><pre># One-Day Meal Plan for Weight Loss
+
+**Breakfast (7:30 AM)**
+- 2 scrambled eggs with spinach and tomatoes
+- 1 cup fresh berries
+- Green tea
+- *~250 calories, 15g protein*
+
+**Mid-Morning Snack (10:30 AM)**
+- Apple slices with sunflower seed butter
+- *~150 calories, 4g protein*
+
+**Lunch (1:00 PM)**
+- 120g grilled chicken breast
+- Large mixed salad (lettuce, cucumber, peppers, carrots)
+- Olive oil and lemon dressing
+- 1/2 cup quinoa
+- *~400 calories, 35g protein*
+
+**Afternoon Snack (4:00 PM)**
+- Carrot and celery sticks with hummus
+- *~120 calories, 4g protein*
+
+**Dinner (7:00 PM)**
+- 150g baked salmon
+- Steamed broccoli and green beans
+- 1/2 cup brown rice
+- *~450 calories, 38g protein*
+
+**Evening Snack (8:30 PM)**
+- Small banana
+- *~90 calories, 1g protein*
+
+**Daily Totals: ~1,460 calories, 97g protein**
+
+*Drink 2-3 liters of water throughout the day*
+
+*All foods are gluten-free, dairy-free, and nut-free*</pre></td>
+                <td class="score-col"><span class="score score-high">9</span></td>
+                <td class="reasoning">The solution meets all mandatory requirements by providing daily caloric total, macronutrient information (protein), and meals with foods, portions, and timing. It satisfies all secondary criteria: includes breakfast, lunch, dinner, and multiple snacks; excludes gluten, dairy, and nuts; and provides appropriate calorie control (1,460 calories) for weight loss. The sunflower seed butter is technically compliant but could be questioned. The calorie level is appropriate for a 62kg athlete seeking weight loss.</td>
+            </tr>
+            <tr>
+                <td>Testing with an average-sized athlete maintaining current weight following a strict vegan diet</td>
+                <td class="prompt-inputs"><strong>height:</strong> 175<br><strong>weight:</strong> 72<br><strong>goal:</strong> maintain current weight<br><strong>restrictions:</strong> vegan</td>
+                <td class="criteria">• Includes breakfast, lunch, dinner, and at least one snack<br>• All meals are plant-based with no animal products<br>• Meal plan is appropriate for weight maintenance</td>
+                <td class="output"><pre># One-Day Vegan Meal Plan for Weight Maintenance
+
+**Breakfast (7:00 AM)**
+- Overnight oats with almond milk, chia seeds, and berries
+- 1 tablespoon peanut butter
+- Orange juice (1 cup)
+- *~450 calories, 15g protein*
+
+**Mid-Morning Snack (10:00 AM)**
+- Banana with 2 tablespoons almond butter
+- *~250 calories, 7g protein*
+
+**Lunch (12:30 PM)**
+- Buddha bowl: 1 cup quinoa, chickpeas (150g), roasted vegetables (sweet potato, bell peppers, zucchini)
+- Tahini dressing
+- *~550 calories, 20g protein*
+
+**Afternoon Snack (3:30 PM)**
+- Hummus (1/4 cup) with whole grain crackers and cucumber
+- *~200 calories, 8g protein*
+
+**Dinner (7:00 PM)**
+- Tofu stir-fry (200g firm tofu) with broccoli, snap peas, carrots
+- 1 cup brown rice
+- Soy sauce and ginger seasoning
+- *~600 calories, 30g protein*
+
+**Evening Snack (9:00 PM)**
+- Small handful of mixed nuts and dried fruit
+- *~180 calories, 5g protein*
+
+**Daily Totals: ~2,230 calories, 85g protein**
+
+*Drink 2-3 liters of water throughout the day*
+
+*All foods are 100% plant-based*</pre></td>
+                <td class="score-col"><span class="score score-high">9</span></td>
+                <td class="reasoning">The solution meets all mandatory requirements by providing daily caloric total, macronutrient information (protein), and meals with foods, portions, and timing. It satisfies all secondary criteria: includes breakfast, lunch, dinner, and multiple snacks; all meals are plant-based with no animal products; and provides appropriate calories (2,230) for a 72kg athlete maintaining current weight. The calorie level is reasonable for weight maintenance given the athlete&#039;s size and activity level.</td>
+            </tr>
+            <tr>
+                <td>Testing with a lightweight competitive swimmer seeking performance optimization with religious dietary restrictions (halal or kosher)</td>
+                <td class="prompt-inputs"><strong>height:</strong> 168<br><strong>weight:</strong> 58<br><strong>goal:</strong> performance optimization<br><strong>restrictions:</strong> halal</td>
+                <td class="criteria">• Includes breakfast, lunch, dinner, and at least one snack<br>• All meals comply with halal dietary requirements<br>• Meal plan supports athletic performance with adequate energy and nutrients</td>
+                <td class="output"><pre># One-Day Halal Meal Plan for Performance Optimization
+
+**Breakfast (6:30 AM)**
+- 3 eggs scrambled with turkey sausage
+- 1 cup oatmeal with honey and dates
+- Glass of orange juice
+- *~550 calories, 30g protein*
+
+**Mid-Morning Snack (9:30 AM)**
+- Greek yogurt (200g) with granola
+- Handful of almonds
+- *~350 calories, 20g protein*
+
+**Lunch (12:30 PM)**
+- 150g grilled halal chicken breast
+- 1 cup basmati rice
+- Mixed vegetables (zucchini, carrots, peppers)
+- Side salad with olive oil
+- *~600 calories, 40g protein*
+
+**Pre-Training Snack (3:00 PM)**
+- Whole grain pita with hummus
+- Apple
+- *~250 calories, 8g protein*
+
+**Post-Training Dinner (6:30 PM)**
+- 180g grilled halal lamb or beef
+- Quinoa (1 cup)
+- Roasted sweet potato
+- Steamed broccoli
+- *~700 calories, 45g protein*
+
+**Evening Snack (9:00 PM)**
+- Protein shake with milk
+- Small serving of dates
+- *~280 calories, 25g protein*
+
+**Daily Totals: ~2,730 calories, 168g protein**
+
+*Drink 3-4 liters of water throughout the day*
+
+*All meat and ingredients are halal-certified*</pre></td>
+                <td class="score-col"><span class="score score-high">9</span></td>
+                <td class="reasoning">The solution meets all mandatory requirements by providing daily caloric total, macronutrient information (protein), and meals with foods, portions, and timing. It satisfies all secondary criteria: includes breakfast, lunch, dinner, and multiple snacks; all meals comply with halal requirements; and provides adequate energy (2,730 calories) and nutrients (168g protein) for a 58kg competitive swimmer focused on performance optimization. The calorie and protein levels are appropriate for athletic performance.</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

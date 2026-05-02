@@ -1,7 +1,6 @@
-import { Anthropic } from "@anthropic-ai/sdk"
-import { Client } from "../anthropic/client.js"                                                    
+import { Client } from "../anthropic/client.js"
 
-const client = new Client(new Anthropic(), "claude-sonnet-4-6", 500)
+const client = new Client("claude-sonnet-4-6", 500)
 
 const msg = "Generate a one sentence movie idea"
 const respHighTemp = await client.chat(

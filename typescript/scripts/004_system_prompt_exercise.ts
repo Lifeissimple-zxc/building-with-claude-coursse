@@ -1,8 +1,7 @@
-import { Anthropic } from "@anthropic-ai/sdk"
 import { Client } from "../anthropic/client.js"
-import type { ChatParams } from "../anthropic/client.js"                                                           
+import type { ChatParams } from "../anthropic/client.js"
 
-const client = new Client(new Anthropic(), "claude-sonnet-4-6", 1000)
+const client = new Client("claude-sonnet-4-6", 1000)
 const systemPrompt = `
 You are a leetcode monster of a programmer. DP, Graphs, Backtracking, you eat these for breakfast.
 At the same time, you are an EXCELLENT communicator. You keep the answers simple, stupid.

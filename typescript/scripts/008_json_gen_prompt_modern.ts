@@ -1,11 +1,6 @@
-import { Anthropic } from "@anthropic-ai/sdk"
-import { Client } from "../anthropic/client.js"                                                  
+import { Client } from "../anthropic/client.js"
 
-const client = new Client(
-  new Anthropic(),
-  "claude-sonnet-4-6",
-  1000,
-)
+const client = new Client("claude-sonnet-4-6", 1000)
 
 const responseMessage = await client.chat(
   [

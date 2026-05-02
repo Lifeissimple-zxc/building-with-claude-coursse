@@ -1,0 +1,82 @@
+[
+  {
+    "output": "# One-Day Meal Plan for Muscle Gain\n\n**Breakfast (7:00 AM)**\n- 4 whole eggs scrambled with cheese\n- 2 cups oatmeal with banana and honey\n- Glass of whole milk\n- *~950 calories, 50g protein*\n\n**Mid-Morning Snack (10:00 AM)**\n- Greek yogurt (300g) with granola\n- Handful of mixed nuts\n- *~500 calories, 30g protein*\n\n**Lunch (1:00 PM)**\n- 250g grilled chicken breast\n- 2 cups brown rice\n- Mixed vegetables (broccoli, carrots)\n- Olive oil drizzle\n- *~900 calories, 65g protein*\n\n**Pre-Workout Snack (4:00 PM)**\n- Protein shake with whole milk\n- 2 slices whole grain bread with peanut butter\n- *~550 calories, 40g protein*\n\n**Dinner (7:00 PM)**\n- 300g lean beef or salmon\n- 2 large sweet potatoes\n- Large mixed salad with avocado\n- *~1,000 calories, 70g protein*\n\n**Evening Snack (9:30 PM)**\n- Cottage cheese (200g)\n- Berries and almonds\n- *~350 calories, 30g protein*\n\n**Daily Totals: ~4,250 calories, 285g protein**\n\n*Drink 3-4 liters of water throughout the day*",
+    "testCase": {
+      "scenario": "Testing with a tall heavyweight powerlifter focused on muscle gain with no dietary restrictions",
+      "taskDescription": "Write a compact concise 1 day meal plan for a single athlete",
+      "promptInputs": {
+        "height": "193",
+        "weight": "115",
+        "goal": "muscle gain",
+        "restrictions": "none"
+      },
+      "solutionCriteria": [
+        "Includes breakfast, lunch, dinner, and at least one snack",
+        "Meal plan is high in protein and calories appropriate for muscle gain",
+        "Portions and meals are practical for a single day"
+      ]
+    },
+    "score": 9,
+    "reasoning": "The solution meets all mandatory requirements by providing daily caloric total, macronutrient information (protein), and meals with foods, portions, and timing. It also satisfies all secondary criteria: includes breakfast, lunch, dinner, and multiple snacks; provides high protein and calories suitable for muscle gain; and presents practical portions for a single day. While the macronutrient breakdown could be more complete with carbs and fats, the mandatory requirement is met with protein data provided."
+  },
+  {
+    "output": "# One-Day Meal Plan for Weight Loss\n\n**Breakfast (7:30 AM)**\n- 2 scrambled eggs with spinach and tomatoes\n- 1 cup fresh berries\n- Green tea\n- *~250 calories, 15g protein*\n\n**Mid-Morning Snack (10:30 AM)**\n- Apple slices with sunflower seed butter\n- *~150 calories, 4g protein*\n\n**Lunch (1:00 PM)**\n- 120g grilled chicken breast\n- Large mixed salad (lettuce, cucumber, peppers, carrots)\n- Olive oil and lemon dressing\n- 1/2 cup quinoa\n- *~400 calories, 35g protein*\n\n**Afternoon Snack (4:00 PM)**\n- Carrot and celery sticks with hummus\n- *~120 calories, 4g protein*\n\n**Dinner (7:00 PM)**\n- 150g baked salmon\n- Steamed broccoli and green beans\n- 1/2 cup brown rice\n- *~450 calories, 38g protein*\n\n**Evening Snack (8:30 PM)**\n- Small banana\n- *~90 calories, 1g protein*\n\n**Daily Totals: ~1,460 calories, 97g protein**\n\n*Drink 2-3 liters of water throughout the day*\n\n*All foods are gluten-free, dairy-free, and nut-free*",
+    "testCase": {
+      "scenario": "Testing with a petite endurance runner aiming for weight loss with multiple allergies (gluten, dairy, nuts)",
+      "taskDescription": "Write a compact concise 1 day meal plan for a single athlete",
+      "promptInputs": {
+        "height": "158",
+        "weight": "62",
+        "goal": "weight loss",
+        "restrictions": "gluten, dairy, nuts"
+      },
+      "solutionCriteria": [
+        "Includes breakfast, lunch, dinner, and at least one snack",
+        "All meals exclude gluten, dairy, and nuts",
+        "Meal plan supports weight loss with appropriate calorie control"
+      ]
+    },
+    "score": 9,
+    "reasoning": "The solution meets all mandatory requirements by providing daily caloric total, macronutrient information (protein), and meals with foods, portions, and timing. It satisfies all secondary criteria: includes breakfast, lunch, dinner, and multiple snacks; excludes gluten, dairy, and nuts; and provides appropriate calorie control (1,460 calories) for weight loss. The sunflower seed butter is technically compliant but could be questioned. The calorie level is appropriate for a 62kg athlete seeking weight loss."
+  },
+  {
+    "output": "# One-Day Vegan Meal Plan for Weight Maintenance\n\n**Breakfast (7:00 AM)**\n- Overnight oats with almond milk, chia seeds, and berries\n- 1 tablespoon peanut butter\n- Orange juice (1 cup)\n- *~450 calories, 15g protein*\n\n**Mid-Morning Snack (10:00 AM)**\n- Banana with 2 tablespoons almond butter\n- *~250 calories, 7g protein*\n\n**Lunch (12:30 PM)**\n- Buddha bowl: 1 cup quinoa, chickpeas (150g), roasted vegetables (sweet potato, bell peppers, zucchini)\n- Tahini dressing\n- *~550 calories, 20g protein*\n\n**Afternoon Snack (3:30 PM)**\n- Hummus (1/4 cup) with whole grain crackers and cucumber\n- *~200 calories, 8g protein*\n\n**Dinner (7:00 PM)**\n- Tofu stir-fry (200g firm tofu) with broccoli, snap peas, carrots\n- 1 cup brown rice\n- Soy sauce and ginger seasoning\n- *~600 calories, 30g protein*\n\n**Evening Snack (9:00 PM)**\n- Small handful of mixed nuts and dried fruit\n- *~180 calories, 5g protein*\n\n**Daily Totals: ~2,230 calories, 85g protein**\n\n*Drink 2-3 liters of water throughout the day*\n\n*All foods are 100% plant-based*",
+    "testCase": {
+      "scenario": "Testing with an average-sized athlete maintaining current weight following a strict vegan diet",
+      "taskDescription": "Write a compact concise 1 day meal plan for a single athlete",
+      "promptInputs": {
+        "height": "175",
+        "weight": "72",
+        "goal": "maintain current weight",
+        "restrictions": "vegan"
+      },
+      "solutionCriteria": [
+        "Includes breakfast, lunch, dinner, and at least one snack",
+        "All meals are plant-based with no animal products",
+        "Meal plan is appropriate for weight maintenance"
+      ]
+    },
+    "score": 9,
+    "reasoning": "The solution meets all mandatory requirements by providing daily caloric total, macronutrient information (protein), and meals with foods, portions, and timing. It satisfies all secondary criteria: includes breakfast, lunch, dinner, and multiple snacks; all meals are plant-based with no animal products; and provides appropriate calories (2,230) for a 72kg athlete maintaining current weight. The calorie level is reasonable for weight maintenance given the athlete's size and activity level."
+  },
+  {
+    "output": "# One-Day Halal Meal Plan for Performance Optimization\n\n**Breakfast (6:30 AM)**\n- 3 eggs scrambled with turkey sausage\n- 1 cup oatmeal with honey and dates\n- Glass of orange juice\n- *~550 calories, 30g protein*\n\n**Mid-Morning Snack (9:30 AM)**\n- Greek yogurt (200g) with granola\n- Handful of almonds\n- *~350 calories, 20g protein*\n\n**Lunch (12:30 PM)**\n- 150g grilled halal chicken breast\n- 1 cup basmati rice\n- Mixed vegetables (zucchini, carrots, peppers)\n- Side salad with olive oil\n- *~600 calories, 40g protein*\n\n**Pre-Training Snack (3:00 PM)**\n- Whole grain pita with hummus\n- Apple\n- *~250 calories, 8g protein*\n\n**Post-Training Dinner (6:30 PM)**\n- 180g grilled halal lamb or beef\n- Quinoa (1 cup)\n- Roasted sweet potato\n- Steamed broccoli\n- *~700 calories, 45g protein*\n\n**Evening Snack (9:00 PM)**\n- Protein shake with milk\n- Small serving of dates\n- *~280 calories, 25g protein*\n\n**Daily Totals: ~2,730 calories, 168g protein**\n\n*Drink 3-4 liters of water throughout the day*\n\n*All meat and ingredients are halal-certified*",
+    "testCase": {
+      "scenario": "Testing with a lightweight competitive swimmer seeking performance optimization with religious dietary restrictions (halal or kosher)",
+      "taskDescription": "Write a compact concise 1 day meal plan for a single athlete",
+      "promptInputs": {
+        "height": "168",
+        "weight": "58",
+        "goal": "performance optimization",
+        "restrictions": "halal"
+      },
+      "solutionCriteria": [
+        "Includes breakfast, lunch, dinner, and at least one snack",
+        "All meals comply with halal dietary requirements",
+        "Meal plan supports athletic performance with adequate energy and nutrients"
+      ]
+    },
+    "score": 9,
+    "reasoning": "The solution meets all mandatory requirements by providing daily caloric total, macronutrient information (protein), and meals with foods, portions, and timing. It satisfies all secondary criteria: includes breakfast, lunch, dinner, and multiple snacks; all meals comply with halal requirements; and provides adequate energy (2,730 calories) and nutrients (168g protein) for a 58kg competitive swimmer focused on performance optimization. The calorie and protein levels are appropriate for athletic performance."
+  }
+]

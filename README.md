@@ -37,3 +37,14 @@ A prompt eval is a function that assigns a score to an output given its input. I
 - code
 - model
 - human
+
+### Prompting
+#### Clear and Direct
+First two lines of the prompt are the most important. Start with a verb. Examples:
+- Write three...
+- Identify the latest ....
+- Locate ...
+- Design ...
+
+#### Being Specific
+Every prompt needs to have guidelines. These can either be qualities that the output has to have OR steps for the model to follow. More often than not the two are combined.

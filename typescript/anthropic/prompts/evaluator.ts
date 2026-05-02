@@ -5,6 +5,12 @@ import type { TestCase, EvalResult, RunPromptFunction } from "../types"
 import type { ModelGradeResult } from "./prompts"
 import { generatePromptEvaluationReport } from "./report"
 
+const stripFences = (s: string): string =>
+  s.trim().replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "")
+
+const trunc = (s: string, n: number = 60): string =>
+  s.length > n ? s.slice(0, n) + "…" : s
+
 export class PromptEvaluator {
   maxConcurrentTasks: number
   client: Client
@@ -52,14 +58,12 @@ export class PromptEvaluator {
     Provide your response as a structured JSON array where each item is a brief description of the idea.
 
     Example:
-    \`\`\`json
     [
         "Testing with technical computer science terminology",
         "Testing with medical research findings",
         "Testing with complex mathematical concepts",
         ...
     ]
-    \`\`\`
 
     Ensure each idea is:
     - Clearly distinct from the others
@@ -93,9 +97,12 @@ export class PromptEvaluator {
 
     messages.push({content: renderedPrompt, role: "user"})
 
+    console.log(`[ideas] generating ${numCases} ideas...`)
     const text = await this.client.chat(messages, {systemPrompt: systemPrompt})
 
-    return JSON.parse(text)
+    const ideas: string[] = JSON.parse(stripFences(text))
+    console.log(`[ideas] got ${ideas.length} ideas`)
+    return ideas
   }
 
   // Generate a single test case for a given idea
@@ -130,14 +137,12 @@ export class PromptEvaluator {
     </allowed_input_keys>
 
     Output Format:
-    \`\`\`json
     {{
         "prompt_inputs": {{
         {example_prompt_inputs}
         }},
         "solution_criteria": ["criterion 1", "criterion 2", ...] // Concise list of criteria for evaluating the solution, 1 to 4 items
     }}
-    \`\`\`
 
     IMPORTANT REQUIREMENTS:
     - You MUST ONLY use these exact input keys in your prompt_inputs: {allowed_keys}
@@ -167,7 +172,6 @@ export class PromptEvaluator {
     </sample_allowed_input_keys>
     </sample_input>
     <ideal_output>
-    \`\`\`json
     {
         "prompt_inputs": {
             "content": "The transition to renewable energy encompasses numerous interdependent dimensions. Solar photovoltaic technology has seen dramatic cost reductions, with panel efficiency improving 24% since 2010 while manufacturing costs declined by 89%, making it economically competitive with fossil fuels in many markets. Concurrently, wind energy has evolved through innovative turbine designs featuring carbon-fiber composite blades and advanced control systems that increase energy capture by 35% in low-wind conditions."
@@ -176,7 +180,6 @@ export class PromptEvaluator {
             "Includes all topics mentioned"
         ]
     }
-    \`\`\`
     </ideal_output>
     This is ideal output because the solution criteria is concise and doesn't ask for anything outside of the scope of the task description.
 
@@ -195,15 +198,17 @@ export class PromptEvaluator {
       example_prompt_inputs: examplePromptInputs,
     })
 
+    console.log(`[case] building: ${trunc(idea)}`)
     const text = await this.client.chat(
       [{ content: renderedPrompt, role: "user" }],
       { systemPrompt: systemPrompt, temperature: 0.7 }
     )
 
-    const parsed = JSON.parse(text) as {
+    const parsed = JSON.parse(stripFences(text)) as {
       prompt_inputs: Record<string, string>
       solution_criteria: string[]
     }
+    console.log(`[case] built: ${trunc(idea)}`)
 
     return {
       scenario: idea,
@@ -303,11 +308,14 @@ export class PromptEvaluator {
       extra_criteria_section: extraCriteriaSection,
     })
 
+    console.log(`[grade] grading: ${trunc(testCase.scenario)}`)
     const evalText = await this.client.chat(
       [{ content: evalPrompt, role: "user" }],
       { temperature: 0.0 }
     )
-    return JSON.parse(evalText) as ModelGradeResult
+    const grade = JSON.parse(stripFences(evalText)) as ModelGradeResult
+    console.log(`[grade] score=${grade.score} for ${trunc(testCase.scenario)}`)
+    return grade
   }
 
   // Run a single test case end-to-end: produce output, then grade it
@@ -316,6 +324,7 @@ export class PromptEvaluator {
     runPromptFunction: RunPromptFunction,
     extraCriteria?: string
   ): Promise<EvalResult> {
+    console.log(`[run] running: ${trunc(testCase.scenario)}`)
     const output = await runPromptFunction(testCase.promptInputs)
     const modelGrade = await this.gradeOutput(testCase, output, extraCriteria)
     return {
@@ -333,15 +342,13 @@ export class PromptEvaluator {
     numCases: number = 1,
     outputFile: string = "dataset.json"
   ): Promise<TestCase[]> {
+    console.log(`[dataset] generating ${numCases} test cases → ${outputFile}`)
     const ideas = await this.generateUniqueIdeas(
       taskDescription,
       promptInputsSpec,
       numCases
     )
 
-    // TODO: replace with your concurrency-limited map.
-    // Should run idea => this.generateTestCase(taskDescription, idea, promptInputsSpec)
-    // with at most this.maxConcurrentTasks running at once.
     const dataset: TestCase[] = await mapWithConcurrency(
       ideas,
       this.maxConcurrentTasks,
@@ -349,6 +356,7 @@ export class PromptEvaluator {
     )
 
     await writeFile(outputFile, JSON.stringify(dataset, null, 2), "utf-8")
+    console.log(`[dataset] wrote ${dataset.length} cases to ${outputFile}`)
     return dataset
   }
 
@@ -360,10 +368,10 @@ export class PromptEvaluator {
     jsonOutputFile: string ="output.json",
     htmlOutputFile: string ="output.html",
   ): Promise<EvalResult[]> {
+    console.log(`[eval] loading dataset from ${datasetFile}`)
     const fileData = await readFile(datasetFile, "utf-8")
     const testCases: TestCase[] = JSON.parse(fileData)
-
-    console.log(`starting eval for ${testCases.length} test cases`)
+    console.log(`[eval] loaded ${testCases.length} cases, running with concurrency=${this.maxConcurrentTasks}`)
 
     const results = await mapWithConcurrency(
       testCases,
@@ -373,13 +381,14 @@ export class PromptEvaluator {
 
     const totalScore = results.reduce((acc, r) => acc + r.score, 0)
     const avgScore = totalScore / results.length
-    console.log(`avg score ${avgScore}`)
+    console.log(`[eval] done — avg score ${avgScore.toFixed(2)} over ${results.length} cases`)
 
-    await writeFile(jsonOutputFile, JSON.stringify(results))
+    await writeFile(jsonOutputFile, JSON.stringify(results, null, 2))
+    console.log(`[eval] wrote results JSON → ${jsonOutputFile}`)
 
     const html = generatePromptEvaluationReport(results)
     await writeFile(htmlOutputFile, html)
-    console.log("results html saved")
+    console.log(`[eval] wrote HTML report → ${htmlOutputFile}`)
 
     return results
   }

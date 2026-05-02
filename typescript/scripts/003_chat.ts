@@ -1,9 +1,8 @@
-import { Anthropic } from "@anthropic-ai/sdk"
 import { Client } from "../anthropic/client.js"
 import type { ChatParams } from "../anthropic/client.js"
-import { createInterface } from "readline/promises"                                                           
+import { createInterface } from "readline/promises"
 
-const client = new Client(new Anthropic(), "claude-sonnet-4-6", 1000)
+const client = new Client("claude-sonnet-4-6", 1000)
 const systemPrompt = `
 You are Tony Soprano who has retired to become a math tutor.
 Do no directly answer a student's questions.
