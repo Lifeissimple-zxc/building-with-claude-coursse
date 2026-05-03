@@ -54,3 +54,18 @@ Good when we pass a lot of context inside it. Tags are delimiters for Claude. Th
 
 #### Examples (one and multi shot prompting)
 Acc to the course, it's the most effective technique. When giving examples, it's smart to provide both regular and corner cases. In addition, it's useful to provide reasoning explaining WHAT makes and ideal example ideal.
+
+
+### Tools
+Tool functions are plain functions that will be executed when Claude decides it needs some extra info to help the user. Best practices:
+- Well-named (haha) and descriptive args.
+- Inputs need to be validated and valiation failures need to nave explicit messages.
+- The error messages need to enable Claude to reason about the needed changes to make the call succeed.
+
+#### Tool Schemas
+A tool schema is a JSON describing the information required to invoke a tool. The most important fields are:
+- name: tool name
+- description: description of the tool (when to use it, what it returns, etc 3-4 sentences long)
+- input_schema: argument description, can be kinda nested
+- required: mandatory arguments
+Claude and LLMs are pretty good at generating tool schema descriptions from the provided code.
