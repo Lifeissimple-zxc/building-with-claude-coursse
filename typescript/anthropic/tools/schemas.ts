@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk"
 
-export const addDurationToDateSchema: Anthropic.Tool = {
+export const getCurrentDatetimeSchema: Anthropic.Tool = {
   "name": "getCurrentDatetime",
   "description": "Returns the current date and time formatted according to the specified format string.",
   "input_schema": {
