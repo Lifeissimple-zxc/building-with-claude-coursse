@@ -68,4 +68,5 @@ A tool schema is a JSON describing the information required to invoke a tool. Th
 - description: description of the tool (when to use it, what it returns, etc 3-4 sentences long)
 - input_schema: argument description, can be kinda nested
 - required: mandatory arguments
-Claude and LLMs are pretty good at generating tool schema descriptions from the provided code.
+- Claude and LLMs are pretty good at generating tool schema descriptions from the provided code.
+- Tools are run on server, we basically serve requests from claude to run them
