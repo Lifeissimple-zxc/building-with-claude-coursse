@@ -70,3 +70,13 @@ A tool schema is a JSON describing the information required to invoke a tool. Th
 - required: mandatory arguments
 - Claude and LLMs are pretty good at generating tool schema descriptions from the provided code.
 - Tools are run on server, we basically serve requests from claude to run them
+
+Fine grained tool calling is a way to speed up the arrival on chunks in the agent response.
+
+### Built-in Tools
+#### Text Edit Tool
+`text_editor_tool_schema` is smth that Claude has. The function impl is on us (developers).
+Schema varies depending on the model version used. Claude code can (probably) be replicated with this.
+
+#### Web Search Tool
+Fully implemented on Claude side. We can cap the number of queries and specify the tool's version.

@@ -19,7 +19,7 @@ const client = new Anthropic()
 const convoResult = await runConversation(client, "Set a reminder about my London trip that is 7 days away from now. Return the reminder JSON string back to me so that a different agent can push it to my calendar. Return a valid json without comments, backticks or annotations.")
 console.log("convo res:")
 console.log(textFromMessage(convoResult))
-
+ 
 async function runConversation(client: Anthropic, initialMessage: string): Promise<Message> {
   const messages: MessageParam[] = [{role: "user", content: initialMessage}]
  
@@ -43,11 +43,8 @@ async function runConversation(client: Anthropic, initialMessage: string): Promi
     for (const block of resp.content) {
       if (block.type !== "tool_use") continue
 
-      console.log(`-> tool call: ${block.name}`, JSON.stringify(block.input))
-
       try {
         const result = runTool(block.input, block.name)
-        console.log(`<- tool result (${block.name}):`, result)
         toolResults.push({
           type: "tool_result",
           tool_use_id: block.id,
@@ -55,7 +52,6 @@ async function runConversation(client: Anthropic, initialMessage: string): Promi
           is_error: false
         })
       } catch (e) {
-        console.log(`<- tool ERROR (${block.name}):`, String(e))
         toolResults.push({
           type: "tool_result",
           tool_use_id: block.id,
