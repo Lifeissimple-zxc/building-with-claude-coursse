@@ -15,14 +15,11 @@ const client = new Anthropic()
 
 const convoResult = await runConversation(client, "Add 2 days to the current date and tell me the result. Return the datetime strig only, no comments, formatting or emojis.")
 console.log("convo res:")
-console.log(convoResult)
-
-console.log("response text")
 console.log(textFromMessage(convoResult))
 
 async function runConversation(client: Anthropic, initialMessage: string): Promise<Message> {
   const messages: MessageParam[] = [{role: "user", content: initialMessage}]
-
+ 
   while (true) {
     const resp = await client.messages.create({
       model: "claude-sonnet-4-6",
@@ -30,8 +27,10 @@ async function runConversation(client: Anthropic, initialMessage: string): Promi
       messages: messages,
       tools: [getCurrentDatetimeSchema, addDurationDateSchema]
     })
-    // end of the road mate
+    console.log("assitant responded:", textFromMessage(resp))
+    
     if (resp.stop_reason !== "tool_use") {
+      // end of the road mate
       return resp
     }
     messages.push({role: "assistant", content: resp.content})
@@ -40,23 +39,8 @@ async function runConversation(client: Anthropic, initialMessage: string): Promi
     for (const block of resp.content) {
       if (block.type !== "tool_use") continue
 
-      let result: string
       try {
-        switch (block.name) {
-          case "getCurrentDatetime": {
-            const input = block.input as {dateFormat?: string}
-            result = getCurrentDatetime(input.dateFormat)
-            break
-          }
-          case "addDurationToDate": {
-            const input = block.input as AddDurationToDateParams
-            result = addDurationToDate(input)
-            break
-          }
-          default: {
-            throw new Error(`unexpected tool: ${block.name}`)
-          }
-        }
+        const result = runTool(block.input, block.name)
         toolResults.push({
           type: "tool_result",
           tool_use_id: block.id,
@@ -73,6 +57,22 @@ async function runConversation(client: Anthropic, initialMessage: string): Promi
       }
     }
     messages.push({role: "user", content: toolResults})
+  }
+}
+
+function runTool(toolInput: unknown, toolName: string): string {
+  switch (toolName) {
+    case "getCurrentDatetime": {
+      const input = toolInput as {dateFormat?: string}
+      return getCurrentDatetime(input.dateFormat)
+    }
+    case "addDurationToDate": {
+      const input = toolInput as AddDurationToDateParams
+      return addDurationToDate(input)
+    }
+    default: {
+      throw new Error(`unexpected tool: ${toolName}`)
+    }
   }
 }
 

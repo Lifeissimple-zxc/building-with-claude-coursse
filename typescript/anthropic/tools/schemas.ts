@@ -17,7 +17,7 @@ export const getCurrentDatetimeSchema: Anthropic.Tool = {
 }
 
 export const addDurationDateSchema: Anthropic.Tool = {
-  "name": "add_duration_to_datetime",
+  "name": "addDurationDate",
   "description": "Adds a specified duration to a datetime string and returns the resulting datetime in a detailed format. This tool converts an input datetime string to a Python datetime object, adds the specified duration in the requested unit, and returns a formatted string of the resulting datetime. It handles various time units including seconds, minutes, hours, days, weeks, months, and years, with special handling for month and year calculations to account for varying month lengths and leap years. The output is always returned in a detailed format that includes the day of the week, month name, day, year, and time with AM/PM indicator (e.g., 'Thursday, April 03, 2025 10:30:00 AM').",
   "input_schema": {
       "type": "object",
