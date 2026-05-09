@@ -1,57 +1,80 @@
 import { Anthropic } from "@anthropic-ai/sdk"
-import { getCurrentDatetimeSchema } from "../anthropic/tools/schemas"
-import { MessageParam } from "@anthropic-ai/sdk/resources"
-import { getCurrentDatetime } from "../anthropic/tools/tools"
+import {
+  getCurrentDatetimeSchema,
+  addDurationDateSchema
+} from "../anthropic/tools/schemas"
+import { MessageParam, Message } from "@anthropic-ai/sdk/resources"
+import {
+  getCurrentDatetime,
+  addDurationToDate,
+  AddDurationToDateParams
+} from "../anthropic/tools/tools"
+import { textFromMessage } from "../anthropic/helpers"
 
 const client = new Anthropic()
-const messages: MessageParam[] = [
-  {
-    role: "user",
-    content: "What is the exact time? Use HH:mm:ss format" 
-  }
-]
 
-const resp = await client.messages.create({
-  model: "claude-sonnet-4-6",
-  max_tokens: 1000,
-  messages: messages,
-  tools: [
-    getCurrentDatetimeSchema
-  ]
-})
+const convoResult = await runConversation(client, "Add 2 days to the current date and tell me the result. Return the datetime strig only, no comments, formatting or emojis.")
+console.log("convo res:")
+console.log(convoResult)
 
-// if we do get a request, it will be the last item in the content sequence
-const toolUseRequest = resp.content.at(-1)
-if (toolUseRequest?.type !== "tool_use") {
-  throw new Error("aint the right type here my man")
-}
-const toolInput = toolUseRequest.input as { dateFormat?: string }
+console.log("response text")
+console.log(textFromMessage(convoResult))
 
-const dt = getCurrentDatetime(toolInput.dateFormat)
+async function runConversation(client: Anthropic, initialMessage: string): Promise<Message> {
+  const messages: MessageParam[] = [{role: "user", content: initialMessage}]
 
-messages.push({role: "assistant", content: resp.content})
-messages.push({
-  role: "user",
-  content: [
-    {
-      type: "tool_result",
-      tool_use_id: toolUseRequest.id,
-      content: dt,
-      is_error: false
+  while (true) {
+    const resp = await client.messages.create({
+      model: "claude-sonnet-4-6",
+      max_tokens: 1000,
+      messages: messages,
+      tools: [getCurrentDatetimeSchema, addDurationDateSchema]
+    })
+    // end of the road mate
+    if (resp.stop_reason !== "tool_use") {
+      return resp
     }
-  ]
-})
+    messages.push({role: "assistant", content: resp.content})
 
-const followup = await client.messages.create({
-  model: "claude-sonnet-4-6",
-  max_tokens: 1000,
-  messages: messages,
-  tools: [
-    getCurrentDatetimeSchema
-  ]
-})
+    const toolResults: Anthropic.ToolResultBlockParam[] = []
+    for (const block of resp.content) {
+      if (block.type !== "tool_use") continue
 
-console.log(JSON.stringify(followup, null, 2))
+      let result: string
+      try {
+        switch (block.name) {
+          case "getCurrentDatetime": {
+            const input = block.input as {dateFormat?: string}
+            result = getCurrentDatetime(input.dateFormat)
+            break
+          }
+          case "addDurationToDate": {
+            const input = block.input as AddDurationToDateParams
+            result = addDurationToDate(input)
+            break
+          }
+          default: {
+            throw new Error(`unexpected tool: ${block.name}`)
+          }
+        }
+        toolResults.push({
+          type: "tool_result",
+          tool_use_id: block.id,
+          content: result,
+          is_error: false
+        })
+      } catch (e) {
+         toolResults.push({
+          type: "tool_result",
+          tool_use_id: block.id,
+          content: String(e),
+          is_error: true
+        })
+      }
+    }
+    messages.push({role: "user", content: toolResults})
+  }
+}
 
 
 

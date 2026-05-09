@@ -36,7 +36,7 @@ export const addDurationDateSchema: Anthropic.Tool = {
           },
           "inputFormat": {
               "type": "string",
-              "description": "The format string for parsing the input datetime_str, using Python's strptime format codes. For example, '%Y-%m-%d' for ISO format dates like '2025-04-03'. Defaults to '%Y-%m-%d'.",
+              "description": "The format string for parsing datetimeStr, using date-fns format tokens. For example, 'yyyy-MM-dd' for ISO dates like '2025-04-03', or 'EEEE, MMMM dd, yyyy hh:mm:ss a' for the detailed default. Defaults to the detailed default format if omitted.",
           },
       },
       "required": ["datetimeStr"],

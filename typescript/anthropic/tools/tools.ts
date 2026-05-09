@@ -22,18 +22,27 @@ export function getCurrentDatetime(dateFormat=defaultDatetimeFormat): string {
   return format(new Date(), dateFormat)
 }
 
-
+export interface AddDurationToDateParams {
+  datetimeStr: string;
+  duration?: number;
+  unit?: "seconds" | "minutes" | "hours" | "days" | "weeks" | "months" | "years";
+  inputFormat?: string;
+}
 
 export function addDurationToDate(
-  datetimeStr: string,
-  duration: number,
-  unit: "seconds" | "minutes" | "hours" | "days" | "weeks" | "months" | "years",
-  inputFormat = defaultDatetimeFormat
+  {
+    datetimeStr,
+    duration = 0,
+    unit = "days",
+    inputFormat
+  }: AddDurationToDateParams
 ): string {
 
-  const parsedDate = parse(datetimeStr, inputFormat, new Date())
+  const inputFormatOrDefault = inputFormat && inputFormat.length > 0 ? inputFormat : defaultDatetimeFormat
+
+  const parsedDate = parse(datetimeStr, inputFormatOrDefault, new Date())
   if (!isValid(parsedDate)) {
-    throw new Error(`could not parse ${datetimeStr} with format ${inputFormat}`)
+    throw new Error(`could not parse ${datetimeStr} with format ${inputFormatOrDefault}`)
   }
 
   const newDateProvider = () => {
