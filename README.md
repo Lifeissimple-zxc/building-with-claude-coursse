@@ -79,4 +79,4 @@ Fine grained tool calling is a way to speed up the arrival on chunks in the agen
 Schema varies depending on the model version used. Claude code can (probably) be replicated with this.
 
 #### Web Search Tool
-Fully implemented on Claude side. We can cap the number of queries and specify the tool's version.
+Fully implemented on Claude side. We can cap the number of queries and specify the tool's version. **It's possible to limit the search to specific domains** to only get reliable data.
