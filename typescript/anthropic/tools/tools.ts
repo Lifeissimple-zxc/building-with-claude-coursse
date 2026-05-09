@@ -67,3 +67,23 @@ export function addDurationToDate(
   const newDate = newDateProvider()
   return format(newDate, defaultDatetimeFormat)
 }
+
+export interface SetReminderParams {
+  date: string;
+  action: string;
+}
+
+export interface Reminder {
+  date: string;
+  action: string;
+}
+
+export function setReminder({ date, action }: SetReminderParams): Reminder {
+  if (date.length === 0) {
+    throw new Error("date must be non-empty")
+  }
+  if (action.length === 0) {
+    throw new Error("action must be non-empty")
+  }
+  return { date, action }
+}

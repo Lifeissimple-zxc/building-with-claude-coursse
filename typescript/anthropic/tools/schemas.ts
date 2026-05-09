@@ -16,8 +16,8 @@ export const getCurrentDatetimeSchema: Anthropic.Tool = {
   }
 }
 
-export const addDurationDateSchema: Anthropic.Tool = {
-  "name": "addDurationDate",
+export const addDurationToDateSchema: Anthropic.Tool = {
+  "name": "addDurationToDate",
   "description": "Adds a specified duration to a datetime string and returns the resulting datetime in a detailed format. This tool converts an input datetime string to a Python datetime object, adds the specified duration in the requested unit, and returns a formatted string of the resulting datetime. It handles various time units including seconds, minutes, hours, days, weeks, months, and years, with special handling for month and year calculations to account for varying month lengths and leap years. The output is always returned in a detailed format that includes the day of the week, month name, day, year, and time with AM/PM indicator (e.g., 'Thursday, April 03, 2025 10:30:00 AM').",
   "input_schema": {
       "type": "object",
@@ -41,4 +41,25 @@ export const addDurationDateSchema: Anthropic.Tool = {
       },
       "required": ["datetimeStr"],
   },
+}
+
+export const setReminderSchema: Anthropic.Tool = {
+  "name": "setReminder",
+  "description": "Schedules a reminder for a given action at a given date/time. Returns a JSON object with the stored date and action so the caller can confirm what was scheduled.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "type": "string",
+        "description": "The date/time at which the reminder should fire, as a string (e.g. 'EEEE, MMMM dd, yyyy hh:mm:ss a' or any human-readable form).",
+        "minLength": 1
+      },
+      "action": {
+        "type": "string",
+        "description": "Short description of what to be reminded about.",
+        "minLength": 1
+      }
+    },
+    "required": ["date", "action"]
+  }
 }
